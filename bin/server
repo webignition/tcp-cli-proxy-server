@@ -7,42 +7,26 @@ namespace webignition\DockerTcpCliProxy\Bin;
 
 const VERSION = 'dev-master';
 
-$address = '0.0.0.0';
-$port = 8000;
+$pharPath = \Phar::running(false);
 
-$exitCodeCreateFailed = 1;
-$exitCodeBindFailed = 2;
-$exitCodeListenFailed = 3;
-
-$listenSocket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-if (false === $listenSocket) {
-    echo "socket_create() failed: reason: ".socket_strerror(socket_last_error()) . "\n";
-    exit($exitCodeCreateFailed);
+if ('' === $pharPath) {
+    require 'vendor/autoload.php';
+} else {
+    require 'phar://server.phar/vendor/autoload.php';
 }
 
-if (false === socket_bind($listenSocket, $address, $port)) {
-    echo "socket_bind() failed: reason: " . socket_strerror(socket_last_error($listenSocket)) . "\n";
-    exit($exitCodeBindFailed);
-}
+use Socket\Raw\Factory;
 
-if (false === socket_listen($listenSocket)) {
-    echo "socket_listen() failed: reason: " . socket_strerror(socket_last_error($listenSocket)) . "\n";
-    exit($exitCodeListenFailed);
-}
+// @todo: handle exceptions in #14 (as a consequence of _create_, _bind, _listen)
+$listenSocket = (new Factory())->createServer('tcp://0.0.0.0:8000');
 
 do {
-    $communicationSocket = socket_accept($listenSocket);
-    if (false === $communicationSocket) {
-        echo "socket_accept() failed: reason: " . socket_strerror(socket_last_error($listenSocket)) . "\n";
-        break;
-    }
+    // @todo: handle exceptions in #14 (as a consequence of _accept)
+    $communicationSocket = $listenSocket->accept();
 
     do {
-        if (false === ($buffer = socket_read($communicationSocket, 2048, PHP_NORMAL_READ))) {
-            echo "socket_read() failed: reason: " . socket_strerror(socket_last_error($communicationSocket)) . "\n";
-            break 2;
-        }
-
+        // @todo: handle exceptions in #14 (as a consequence of _read)
+        $buffer = $communicationSocket->read(2048, PHP_NORMAL_READ);
         $buffer = trim($buffer);
 
         if ('' === $buffer) {
@@ -59,11 +43,17 @@ do {
 
         exec($command, $commandOutput, $commandExitCode);
 
-        socket_write($communicationSocket, (string) $commandExitCode . "\n");
-        socket_write($communicationSocket, implode("\n", $commandOutput) . "\n");
+        // @todo: handle exceptions in #14 (as a consequence of _write)
+        $communicationSocket->write((string) $commandExitCode . "\n");
+        // @todo: handle exceptions in #14 (as a consequence of _write)
+        $communicationSocket->write(implode("\n", $commandOutput) . "\n");
     } while (true);
 
-    socket_close($communicationSocket);;
+    // @todo: handle exceptions in #14 (as a consequence of _shutdown)
+    $communicationSocket->shutdown();
+    $communicationSocket->close();
 } while (true);
 
-socket_close($listenSocket);
+// @todo: handle exceptions in #14 (as a consequence of _shutdown)
+$listenSocket->shutdown();
+$listenSocket->close();

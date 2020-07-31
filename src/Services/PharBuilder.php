@@ -10,7 +10,7 @@ class PharBuilder
 {
     public function build(string $root, string $binPath): void
     {
-        $latestGitTag = trim((string) (shell_exec('git describe --abbrev=0 --tags') ?? 'dev'));
+        $latestGitTag = trim((string) (shell_exec('git describe --abbrev=0 --tags') ?? 'dev-master'));
 
         $this->setBinVersion($binPath, $latestGitTag);
         $this->executeBuild($root);
@@ -40,6 +40,7 @@ class PharBuilder
             'bin/server',
             [
                 'src',
+                'vendor',
             ]
         ))->build();
     }
