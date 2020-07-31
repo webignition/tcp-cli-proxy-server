@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\DockerTcpCliProxy\Services;
 
 use webignition\DockerTcpCliProxy\Model\Command;
-use webignition\DockerTcpCliProxy\Model\CommunicationSocket;
 
 class CommandReader extends AbstractSocketHandler
 {

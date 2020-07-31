@@ -27,6 +27,9 @@
             "./vendor/bin/ecs check src tests --ansi --config ecs.yaml",
             "./vendor/bin/phpcs"
         ],
+        "cs-fix": [
+            "./vendor/bin/ecs check src tests --ansi --config ecs.yaml --fix"
+        ],
         "static-analysis": "./vendor/bin/phpstan analyse --ansi",
         "test": "./vendor/bin/phpunit --colors=always",
         "ci": [
