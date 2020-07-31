@@ -5,6 +5,10 @@ php:
 install:
   - composer install --prefer-dist --no-suggest
 
+script:
+  - ./bin/server &
+  - composer ci
+
 cache:
   directories:
   - "$HOME/.composer/cache/files"
