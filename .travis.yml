@@ -1,4 +1,5 @@
 language: php
+
 php:
   - '7.4'
 
@@ -8,9 +9,18 @@ install:
 script:
   - composer ci
   - composer phar-build
-  - ./server &
+  - "./server &"
   - composer server-test
 
 cache:
   directories:
   - "$HOME/.composer/cache/files"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: Ab3/tQvJ6UI9lxTN8KG5SMagRD1vqpOcbx1CLdHohtM6KV2WQkfswNhZqw0y4HzGg3lpnUHfOMrqfUUVZ53kro7vsoiaD9ssFt4JCgpK3sgqOEb6Oe5K2K89ntfa3ki32QHen3ImLIwpxn5MYAN1KNCNMuASspgxRJhpkRifYsX61rppKehP8mmXT/kn/blWzMZPePBpg6qH0MRBewnXZ8HwHmkPuQ5JDMNpVsp44xVZQjbQ8DVFc5G7p219CX7uPNfodPkhHgFkeJrWSGA34/YPQ7ckg6criLPzoZ+X5RFaUlaFYK4Qkb/0gYlfiRK0nR7/QgPdFaXTkbxUV9dgwXO2VaWIPxhyHKbYNoQO/EZRK+b+PundNWUklqBErXqNP7wssIzdyp4Z8f5ZFGlqeIv04IXihvx258NCpYAW2jaqEzzOCRd+Fi9IkBCW3rZ4S3jqngopkobjToTcKZFXkZ3loIynrnIqG+GNTEXL7ELoon01oeKXTEIwgy5aomwy8bgPPdK2qO3lAzC31jgUasWTwyrIqSlAMLeAL5kzC3zFVfyrmq2fo7pchrOberhnCupJzHhu+XzpcpxCDc9Dgsogimx+vjFmw2eMB7lio2R9JpEHlL9QhSytbQxf19yAo5qwYpMlq1x116Z361cDkpVmOP0w28/ZRRid6Cy/j2Y=
+  file: build/server.phar
+  on:
+    tags: true
+  skip_cleanup: 'true'
