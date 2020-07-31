@@ -10,7 +10,7 @@ class PharBuilder
 {
     public function build(string $root, string $binPath): void
     {
-        $latestGitTag = trim((string) (shell_exec('git describe --abbrev=0 --tags') ?? 'foo'));
+        $latestGitTag = trim((string) (shell_exec('git describe --abbrev=0 --tags') ?? 'dev'));
 
         $this->setBinVersion($binPath, $latestGitTag);
         $this->executeBuild($root);
