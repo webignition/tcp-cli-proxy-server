@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Tests\Integration\Bin;
+namespace webignition\DockerTcpCliProxy\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
 
