@@ -6,6 +6,7 @@ namespace webignition\DockerTcpCliProxy;
 
 use Socket\Raw\Factory;
 use Socket\Raw\Socket;
+use webignition\DockerTcpCliProxy\Model\Command;
 use webignition\DockerTcpCliProxy\Model\CommandResult;
 
 class Server
@@ -43,14 +44,13 @@ class Server
 
             do {
                 $command = $this->readCommand();
-                $closeClientConnection = self::CLOSE_CLIENT_CONNECTION_COMMAND === $command;
 
-                if (false === $closeClientConnection && is_string($command)) {
+                if ($command->isExecutable()) {
                     $this->returnCommandResult(
                         $this->createCommandResult($command)
                     );
                 }
-            } while (false === $closeClientConnection);
+            } while (false === $command->isCloseClientConnection());
 
             $this->closeCommunicationSocket();
         }
@@ -76,22 +76,20 @@ class Server
         $this->communicationSocket->close();
     }
 
-    private function readCommand(): ?string
+    private function readCommand(): Command
     {
         // @todo: handle exceptions in #14 (as a consequence of _read)
         $buffer = $this->communicationSocket->read(2048, PHP_NORMAL_READ);
         $buffer = trim($buffer);
 
-        return '' === $buffer
-            ? null
-            : $buffer;
+        return new Command($buffer);
     }
 
-    private function createCommandResult(string $command): CommandResult
+    private function createCommandResult(Command $command): CommandResult
     {
         $output = [];
         $exitCode = null;
-        exec($command, $output, $exitCode);
+        exec((string) $command, $output, $exitCode);
 
         return new CommandResult((int) $exitCode, implode("\n", $output));
     }
