@@ -1,2 +1,4 @@
+./build/server.phar
+/server
 /vendor/
 .phpunit.result.cache

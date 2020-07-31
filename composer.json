@@ -33,11 +33,26 @@
             "@cs",
             "@static-analysis",
             "@test"
+        ],
+        "phar-dump-autoload": "@composer dump-autoload --classmap-authoritative --no-dev --no-scripts --optimize",
+        "phar-compile": "@php -dphar.readonly=0 bin/compile.php",
+        "phar-build": [
+            "rm -f build/server.phar",
+            "@phar-dump-autoload",
+            "@phar-compile",
+            "rm -f server",
+            "cp build/server.phar server",
+            "chmod +x ./server"
+        ],
+        "server-test": [
+            "@composer dump-autoload",
+            "./vendor/bin/phpunit --colors=always tests/Integration/ServerTest.php"
         ]
     },
     "require": {
         "php": ">=7.4",
-        "ext-sockets": "*"
+        "ext-sockets": "*",
+        "webignition/single-command-application-phar-builder": "^0.2.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.2",
