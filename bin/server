@@ -15,45 +15,10 @@ if ('' === $pharPath) {
     require 'phar://server.phar/vendor/autoload.php';
 }
 
-use Socket\Raw\Factory;
+use webignition\DockerTcpCliProxy\Server;
 
-// @todo: handle exceptions in #14 (as a consequence of _create_, _bind, _listen)
-$listenSocket = (new Factory())->createServer('tcp://0.0.0.0:8000');
+$server = new Server('0.0.0.0', 8000);
 
-do {
-    // @todo: handle exceptions in #14 (as a consequence of _accept)
-    $communicationSocket = $listenSocket->accept();
-
-    do {
-        // @todo: handle exceptions in #14 (as a consequence of _read)
-        $buffer = $communicationSocket->read(2048, PHP_NORMAL_READ);
-        $buffer = trim($buffer);
-
-        if ('' === $buffer) {
-            continue;
-        }
-
-        if ($buffer == 'quit') {
-            break;
-        }
-
-        $command = $buffer;
-        $commandOutput = [];
-        $commandExitCode = null;
-
-        exec($command, $commandOutput, $commandExitCode);
-
-        // @todo: handle exceptions in #14 (as a consequence of _write)
-        $communicationSocket->write((string) $commandExitCode . "\n");
-        // @todo: handle exceptions in #14 (as a consequence of _write)
-        $communicationSocket->write(implode("\n", $commandOutput) . "\n");
-    } while (true);
-
-    // @todo: handle exceptions in #14 (as a consequence of _shutdown)
-    $communicationSocket->shutdown();
-    $communicationSocket->close();
-} while (true);
-
-// @todo: handle exceptions in #14 (as a consequence of _shutdown)
-$listenSocket->shutdown();
-$listenSocket->close();
+$server->startListening();
+$server->handleClients();
+$server->stopListening();
