@@ -19,6 +19,5 @@ use webignition\DockerTcpCliProxy\Server;
 
 $server = new Server('0.0.0.0', 8000);
 
-$server->startListening();
 $server->handleClients();
 $server->stopListening();
