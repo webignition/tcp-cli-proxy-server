@@ -6,13 +6,11 @@ namespace webignition\DockerTcpCliProxy;
 
 use Socket\Raw\Factory;
 use Socket\Raw\Socket;
-use webignition\DockerTcpCliProxy\Model\Command;
-use webignition\DockerTcpCliProxy\Model\CommandResult;
+use webignition\DockerTcpCliProxy\Services\CommandReader;
+use webignition\DockerTcpCliProxy\Services\ResponseWriter;
 
 class Server
 {
-    private const CLOSE_CLIENT_CONNECTION_COMMAND = 'quit';
-
     private string $bindAddress;
     private int $bindPort;
 
@@ -41,14 +39,14 @@ class Server
     {
         while (true) {
             $this->createCommunicationSocket();
+            $commandReader = new CommandReader($this->communicationSocket);
+            $responseWriter = new ResponseWriter($this->communicationSocket);
 
             do {
-                $command = $this->readCommand();
+                $command = $commandReader->read();
 
                 if ($command->isExecutable()) {
-                    $this->returnCommandResult(
-                        $this->createCommandResult($command)
-                    );
+                    $responseWriter->write($command->execute());
                 }
             } while (false === $command->isCloseClientConnection());
 
@@ -74,31 +72,5 @@ class Server
         // @todo: handle exceptions in #14 (as a consequence of _shutdown)
         $this->communicationSocket->shutdown();
         $this->communicationSocket->close();
-    }
-
-    private function readCommand(): Command
-    {
-        // @todo: handle exceptions in #14 (as a consequence of _read)
-        $buffer = $this->communicationSocket->read(2048, PHP_NORMAL_READ);
-        $buffer = trim($buffer);
-
-        return new Command($buffer);
-    }
-
-    private function createCommandResult(Command $command): CommandResult
-    {
-        $output = [];
-        $exitCode = null;
-        exec((string) $command, $output, $exitCode);
-
-        return new CommandResult((int) $exitCode, implode("\n", $output));
-    }
-
-    private function returnCommandResult(CommandResult $commandResult): void
-    {
-        // @todo: handle exceptions in #14 (as a consequence of _write)
-        $this->communicationSocket->write((string) $commandResult->getExitCode() . "\n");
-        // @todo: handle exceptions in #14 (as a consequence of _write)
-        $this->communicationSocket->write($commandResult->getResponse() . "\n");
     }
 }
