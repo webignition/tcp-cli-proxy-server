@@ -27,6 +27,9 @@
             "./vendor/bin/ecs check src tests --ansi --config ecs.yaml",
             "./vendor/bin/phpcs"
         ],
+        "cs-fix": [
+            "./vendor/bin/ecs check src tests --ansi --config ecs.yaml --fix"
+        ],
         "static-analysis": "./vendor/bin/phpstan analyse --ansi",
         "test": "./vendor/bin/phpunit --colors=always",
         "ci": [
@@ -52,6 +55,7 @@
     "require": {
         "php": ">=7.4",
         "ext-sockets": "*",
+        "clue/socket-raw": "^1.4",
         "webignition/single-command-application-phar-builder": "^0.2.0"
     },
     "require-dev": {

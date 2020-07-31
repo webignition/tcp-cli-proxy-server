@@ -7,63 +7,17 @@ namespace webignition\DockerTcpCliProxy\Bin;
 
 const VERSION = 'dev-master';
 
-$address = '0.0.0.0';
-$port = 8000;
+$pharPath = \Phar::running(false);
 
-$exitCodeCreateFailed = 1;
-$exitCodeBindFailed = 2;
-$exitCodeListenFailed = 3;
-
-$listenSocket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-if (false === $listenSocket) {
-    echo "socket_create() failed: reason: ".socket_strerror(socket_last_error()) . "\n";
-    exit($exitCodeCreateFailed);
+if ('' === $pharPath) {
+    require 'vendor/autoload.php';
+} else {
+    require 'phar://server.phar/vendor/autoload.php';
 }
 
-if (false === socket_bind($listenSocket, $address, $port)) {
-    echo "socket_bind() failed: reason: " . socket_strerror(socket_last_error($listenSocket)) . "\n";
-    exit($exitCodeBindFailed);
-}
+use webignition\DockerTcpCliProxy\Server;
 
-if (false === socket_listen($listenSocket)) {
-    echo "socket_listen() failed: reason: " . socket_strerror(socket_last_error($listenSocket)) . "\n";
-    exit($exitCodeListenFailed);
-}
+$server = new Server('0.0.0.0', 8000);
 
-do {
-    $communicationSocket = socket_accept($listenSocket);
-    if (false === $communicationSocket) {
-        echo "socket_accept() failed: reason: " . socket_strerror(socket_last_error($listenSocket)) . "\n";
-        break;
-    }
-
-    do {
-        if (false === ($buffer = socket_read($communicationSocket, 2048, PHP_NORMAL_READ))) {
-            echo "socket_read() failed: reason: " . socket_strerror(socket_last_error($communicationSocket)) . "\n";
-            break 2;
-        }
-
-        $buffer = trim($buffer);
-
-        if ('' === $buffer) {
-            continue;
-        }
-
-        if ($buffer == 'quit') {
-            break;
-        }
-
-        $command = $buffer;
-        $commandOutput = [];
-        $commandExitCode = null;
-
-        exec($command, $commandOutput, $commandExitCode);
-
-        socket_write($communicationSocket, (string) $commandExitCode . "\n");
-        socket_write($communicationSocket, implode("\n", $commandOutput) . "\n");
-    } while (true);
-
-    socket_close($communicationSocket);;
-} while (true);
-
-socket_close($listenSocket);
+$server->handleClients();
+$server->stopListening();
