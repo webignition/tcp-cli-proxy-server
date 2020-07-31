@@ -6,32 +6,18 @@ namespace webignition\DockerTcpCliProxy\Model;
 
 use Socket\Raw\Socket;
 
-class CommunicationSocket
+class CommunicationSocket extends AbstractSocket
 {
     private ListenSocket $listenSocket;
-    private ?Socket $socket = null;
 
     public function __construct(ListenSocket $listenSocket)
     {
         $this->listenSocket = $listenSocket;
     }
 
-    public function getSocket(): Socket
+    protected function createSocket(): Socket
     {
-        if (null === $this->socket) {
-            // @todo: handle exceptions in #14 (as a consequence of _accept)
-            $this->socket = $this->listenSocket->getSocket()->accept();
-        }
-
-        return $this->socket;
-    }
-
-    public function close(): void
-    {
-        // @todo: handle exceptions in #14 (as a consequence of _shutdown)
-        if ($this->socket instanceof Socket) {
-            $this->socket->shutdown();
-            $this->socket->close();
-        }
+        // @todo: handle exceptions in #14 (as a consequence of _accept)
+        return $this->listenSocket->getSocket()->accept();
     }
 }
