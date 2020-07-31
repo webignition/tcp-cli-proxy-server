@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace webignition\DockerTcpCliProxy\Bin;
 
+const VERSION = 'dev-master';
+
 $address = '0.0.0.0';
 $port = 8000;
 
