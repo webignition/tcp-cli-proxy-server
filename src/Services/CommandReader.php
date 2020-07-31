@@ -7,15 +7,8 @@ namespace webignition\DockerTcpCliProxy\Services;
 use webignition\DockerTcpCliProxy\Model\Command;
 use webignition\DockerTcpCliProxy\Model\CommunicationSocket;
 
-class CommandReader
+class CommandReader extends AbstractSocketHandler
 {
-    private CommunicationSocket $communicationSocket;
-
-    public function __construct(CommunicationSocket $communicationSocket)
-    {
-        $this->communicationSocket = $communicationSocket;
-    }
-
     public function read(): Command
     {
         // @todo: handle exceptions in #14 (as a consequence of _read)
