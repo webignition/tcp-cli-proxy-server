@@ -17,7 +17,17 @@ if ('' === $pharPath) {
 
 use webignition\DockerTcpCliProxy\Server;
 
+pcntl_async_signals(true);
+
+$running = true;
+pcntl_signal(SIGINT, function () use (&$running) {
+    $running = false;
+});
+
 $server = new Server('0.0.0.0', 8000);
 
-$server->handleClients();
+while ($running) {
+    $server->handleClients();
+}
+
 $server->stopListening();
