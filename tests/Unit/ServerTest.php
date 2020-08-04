@@ -99,6 +99,12 @@ class ServerTest extends TestCase
         $server->stopListening();
     }
 
+    /**
+     * @param Command $command
+     * @param CommandResult $commandResult
+     *
+     * @return Command
+     */
     private function mockCommandExecute(Command $command, CommandResult $commandResult): Command
     {
         $command = Mockery::mock($command);
@@ -106,6 +112,7 @@ class ServerTest extends TestCase
             ->shouldReceive('execute')
             ->andReturn($commandResult);
 
+        /** @var Command $command */
         return $command;
     }
 
