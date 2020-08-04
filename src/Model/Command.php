@@ -6,7 +6,7 @@ namespace webignition\DockerTcpCliProxy\Model;
 
 class Command
 {
-    private const CLOSE_CLIENT_CONNECTION_COMMAND = 'quit';
+    public const CLOSE_CLIENT_CONNECTION_COMMAND = 'quit';
 
     private ?string $content;
 
