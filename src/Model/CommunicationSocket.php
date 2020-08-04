@@ -19,7 +19,6 @@ class CommunicationSocket
     public function getSocket(): Socket
     {
         if (null === $this->socket) {
-            // @todo: handle exceptions in #14 (as a consequence of _accept)
             $this->socket = $this->listenSocket->accept();
         }
 
@@ -28,7 +27,6 @@ class CommunicationSocket
 
     public function close(): void
     {
-        // @todo: handle exceptions in #14 (as a consequence of _shutdown)
         if ($this->socket instanceof Socket) {
             $this->socket->shutdown();
             $this->socket->close();
