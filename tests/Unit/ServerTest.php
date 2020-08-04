@@ -7,26 +7,40 @@ namespace webignition\DockerTcpCliProxy\Tests\Unit\Services;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
+use Socket\Raw\Factory;
 use webignition\DockerTcpCliProxy\Model\Command;
 use webignition\DockerTcpCliProxy\Model\CommandResult;
 use webignition\DockerTcpCliProxy\Model\ListenSocket;
 use webignition\DockerTcpCliProxy\Server;
 use webignition\DockerTcpCliProxy\Services\ClientHandler;
 use webignition\DockerTcpCliProxy\Services\ClientHandlerFactory;
+use webignition\DockerTcpCliProxy\Services\CommunicationSocketFactory;
 
 class ServerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    private int $commandIndex = 0;
-    private int $resultIndex = 0;
-
-    protected function setUp(): void
+    public function testCreate()
     {
-        parent::setUp();
+        $bindAddress = 'localhost';
+        $bindPort = 8080;
 
-        $this->commandIndex = 0;
-        $this->resultIndex = 0;
+        $server = Server::create($bindAddress, $bindPort);
+
+        $expectedListenSocket = new ListenSocket(
+            new Factory(),
+            'tcp://' . $bindAddress . ':' . $bindPort
+        );
+
+        self::assertEquals(
+            new Server(
+                $expectedListenSocket,
+                new ClientHandlerFactory(
+                    new CommunicationSocketFactory($expectedListenSocket)
+                )
+            ),
+            $server
+        );
     }
 
     /**
@@ -70,6 +84,21 @@ class ServerTest extends TestCase
         ];
     }
 
+    public function testStopListening()
+    {
+        $listenSocket = Mockery::mock(ListenSocket::class);
+        $listenSocket
+            ->shouldReceive('close')
+            ->withNoArgs();
+
+        $server = new Server(
+            $listenSocket,
+            Mockery::mock(ClientHandlerFactory::class)
+        );
+
+        $server->stopListening();
+    }
+
     private function mockCommandExecute(Command $command, CommandResult $commandResult): Command
     {
         $command = Mockery::mock($command);
@@ -88,24 +117,27 @@ class ServerTest extends TestCase
      */
     private function createClientHandler(array $commands, array $commandResults): ClientHandler
     {
+        $commandIndex = 0;
+        $resultIndex = 0;
+
         $clientHandler = Mockery::mock(ClientHandler::class);
 
         $clientHandler
             ->shouldReceive('readCommand')
-            ->andReturnUsing(function () use ($commands) {
-                $command = $commands[$this->commandIndex];
+            ->andReturnUsing(function () use ($commands, &$commandIndex) {
+                $command = $commands[$commandIndex];
 
-                $this->commandIndex++;
+                $commandIndex++;
 
                 return $command;
             });
 
         $clientHandler
             ->shouldReceive('writeResponse')
-            ->withArgs(function (CommandResult $commandResult) use ($commandResults) {
-                self::assertSame($commandResults[$this->resultIndex], $commandResult);
+            ->withArgs(function (CommandResult $commandResult) use ($commandResults, &$resultIndex) {
+                self::assertSame($commandResults[$resultIndex], $commandResult);
 
-                $this->resultIndex++;
+                $resultIndex++;
 
                 return true;
             });
