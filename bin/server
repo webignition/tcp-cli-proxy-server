@@ -16,7 +16,6 @@ if ('' === $pharPath) {
 }
 
 use webignition\DockerTcpCliProxy\Server;
-use webignition\DockerTcpCliProxy\Services\ListenSocketFactory;
 
 pcntl_async_signals(true);
 
@@ -25,11 +24,10 @@ pcntl_signal(SIGINT, function () use (&$running) {
     $running = false;
 });
 
-$listenSocket = (new ListenSocketFactory())->create('0.0.0.0', 8000);
-$server = new Server($listenSocket);
+$server = Server::create('0.0.0.0', 8000);
 
 while ($running) {
-    $server->handleClients();
+    $server->handleClient();
 }
 
 $server->stopListening();
