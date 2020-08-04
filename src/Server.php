@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\DockerTcpCliProxy;
 
-use Socket\Raw\Factory;
 use webignition\DockerTcpCliProxy\Model\CommunicationSocket;
 use webignition\DockerTcpCliProxy\Model\ListenSocket;
 use webignition\DockerTcpCliProxy\Services\CommandReader;
@@ -12,23 +11,11 @@ use webignition\DockerTcpCliProxy\Services\ResponseWriter;
 
 class Server
 {
-    private string $bindAddress;
-    private int $bindPort;
-
     private ListenSocket $listenSocket;
 
-    public function __construct(string $bindAddress, int $bindPort)
+    public function __construct(ListenSocket $listenSocket)
     {
-        $this->bindAddress = $bindAddress;
-        $this->bindPort = $bindPort;
-        $this->listenSocket = new ListenSocket(
-            new Factory(),
-            sprintf(
-                'tcp://%s:%d',
-                $this->bindAddress,
-                $this->bindPort
-            )
-        );
+        $this->listenSocket = $listenSocket;
     }
 
     public function handleClients(): void
