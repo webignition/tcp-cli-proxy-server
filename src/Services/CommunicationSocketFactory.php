@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\DockerTcpCliProxy\Services;
 
+use Socket\Raw\Socket;
 use webignition\DockerTcpCliProxy\Model\CommunicationSocket;
-use webignition\DockerTcpCliProxy\Model\ListenSocket;
 
 class CommunicationSocketFactory
 {
-    private ListenSocket $listenSocket;
+    private Socket $listenSocket;
 
-    public function __construct(ListenSocket $listenSocket)
+    public function __construct(Socket $listenSocket)
     {
         $this->listenSocket = $listenSocket;
     }

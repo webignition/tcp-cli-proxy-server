@@ -4,25 +4,30 @@ declare(strict_types=1);
 
 namespace webignition\DockerTcpCliProxy\Tests\Unit\Services;
 
+use Mockery;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Socket\Raw\Factory;
-use webignition\DockerTcpCliProxy\Model\ListenSocket;
+use Socket\Raw\Socket;
 use webignition\DockerTcpCliProxy\Services\ListenSocketFactory;
 
 class ListenSocketFactoryTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     public function testCreate()
     {
-        $listenSocketFactory = new ListenSocketFactory();
-
         $bindAddress = 'localhost';
         $bindPort = 8080;
+        $expectedCreateServerAddress = 'tcp://' . $bindAddress . ':' . $bindPort;
 
-        $listenSocket = $listenSocketFactory->create($bindAddress, $bindPort);
+        $socketFactory = Mockery::mock(Factory::class);
+        $socketFactory
+            ->shouldReceive('createServer')
+            ->with($expectedCreateServerAddress)
+            ->andReturn(Mockery::mock(Socket::class));
 
-        self::assertEquals(
-            new ListenSocket(new Factory(), 'tcp://' . $bindAddress . ':' . $bindPort),
-            $listenSocket
-        );
+        $listenSocketFactory = new ListenSocketFactory($socketFactory);
+        $listenSocketFactory->create($bindAddress, $bindPort);
     }
 }

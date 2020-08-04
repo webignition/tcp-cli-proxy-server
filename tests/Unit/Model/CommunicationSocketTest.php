@@ -9,7 +9,6 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Socket\Raw\Socket;
 use webignition\DockerTcpCliProxy\Model\CommunicationSocket;
-use webignition\DockerTcpCliProxy\Model\ListenSocket;
 
 class CommunicationSocketTest extends TestCase
 {
@@ -37,17 +36,12 @@ class CommunicationSocketTest extends TestCase
         $communicationSocket->close();
     }
 
-    private function createListenSocket(Socket $communicationSocketRawSocket): ListenSocket
+    private function createListenSocket(Socket $communicationSocketRawSocket): Socket
     {
-        $listenSocketRawSocket = Mockery::mock(Socket::class);
-        $listenSocketRawSocket
+        $listenSocket = Mockery::mock(Socket::class);
+        $listenSocket
             ->shouldReceive('accept')
             ->andReturn($communicationSocketRawSocket);
-
-        $listenSocket = Mockery::mock(ListenSocket::class);
-        $listenSocket
-            ->shouldReceive('getSocket')
-            ->andReturn($listenSocketRawSocket);
 
         return $listenSocket;
     }

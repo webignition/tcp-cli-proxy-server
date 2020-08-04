@@ -4,25 +4,32 @@ declare(strict_types=1);
 
 namespace webignition\DockerTcpCliProxy;
 
-use webignition\DockerTcpCliProxy\Model\ListenSocket;
+use Socket\Raw\Factory;
+use Socket\Raw\Socket;
 use webignition\DockerTcpCliProxy\Services\ClientHandlerFactory;
 use webignition\DockerTcpCliProxy\Services\CommunicationSocketFactory;
 use webignition\DockerTcpCliProxy\Services\ListenSocketFactory;
 
 class Server
 {
-    private ListenSocket $listenSocket;
+    private Socket $listenSocket;
     private ClientHandlerFactory $clientHandlerFactory;
 
-    public function __construct(ListenSocket $listenSocket, ClientHandlerFactory $clientHandlerFactory)
+    public function __construct(Socket $listenSocket, ClientHandlerFactory $clientHandlerFactory)
     {
         $this->listenSocket = $listenSocket;
         $this->clientHandlerFactory = $clientHandlerFactory;
     }
 
-    public static function create(string $bindAddress, int $bindPort): self
-    {
-        $listenSocket = (new ListenSocketFactory())->create($bindAddress, $bindPort);
+    public static function create(
+        string $bindAddress,
+        int $bindPort,
+        ?Factory $socketFactory = null,
+        ?ListenSocketFactory $listenSocketFactory = null
+    ): self {
+        $socketFactory = $socketFactory ?? new Factory();
+        $listenSocketFactory = $listenSocketFactory ?? new ListenSocketFactory($socketFactory);
+        $listenSocket = $listenSocketFactory->create($bindAddress, $bindPort);
 
         return new Server(
             $listenSocket,
@@ -49,6 +56,7 @@ class Server
 
     public function stopListening(): void
     {
+        $this->listenSocket->shutdown();
         $this->listenSocket->close();
     }
 }
