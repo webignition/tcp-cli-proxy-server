@@ -33,22 +33,20 @@ class Server
 
     public function handleClients(): void
     {
-        while (true) {
-            $communicationSocket = new CommunicationSocket($this->listenSocket);
+        $communicationSocket = new CommunicationSocket($this->listenSocket);
 
-            $commandReader = new CommandReader($communicationSocket);
-            $responseWriter = new ResponseWriter($communicationSocket);
+        $commandReader = new CommandReader($communicationSocket);
+        $responseWriter = new ResponseWriter($communicationSocket);
 
-            do {
-                $command = $commandReader->read();
+        do {
+            $command = $commandReader->read();
 
-                if ($command->isExecutable()) {
-                    $responseWriter->write($command->execute());
-                }
-            } while (false === $command->isCloseClientConnection());
+            if ($command->isExecutable()) {
+                $responseWriter->write($command->execute());
+            }
+        } while (false === $command->isCloseClientConnection());
 
-            $communicationSocket->close();
-        }
+        $communicationSocket->close();
     }
 
     public function stopListening(): void
