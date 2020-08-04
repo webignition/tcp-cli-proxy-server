@@ -5,19 +5,24 @@ declare(strict_types=1);
 namespace webignition\DockerTcpCliProxy\Services;
 
 use Socket\Raw\Factory;
-use webignition\DockerTcpCliProxy\Model\ListenSocket;
+use Socket\Raw\Socket;
 
 class ListenSocketFactory
 {
-    public function create(string $bindAddress, int $bindPort): ListenSocket
+    private Factory $socketFactory;
+
+    public function __construct(Factory $socketFactory)
     {
-        return new ListenSocket(
-            new Factory(),
-            sprintf(
-                'tcp://%s:%d',
-                $bindAddress,
-                $bindPort
-            )
-        );
+        $this->socketFactory = $socketFactory;
+    }
+
+    public function create(string $bindAddress, int $bindPort): Socket
+    {
+        // @todo: handle exceptions in #14 (as a consequence of _create, _bind, _listen)
+        return $this->socketFactory->createServer(sprintf(
+            'tcp://%s:%d',
+            $bindAddress,
+            $bindPort
+        ));
     }
 }

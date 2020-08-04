@@ -8,9 +8,9 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Socket\Raw\Factory;
+use Socket\Raw\Socket;
 use webignition\DockerTcpCliProxy\Model\Command;
 use webignition\DockerTcpCliProxy\Model\CommandResult;
-use webignition\DockerTcpCliProxy\Model\ListenSocket;
 use webignition\DockerTcpCliProxy\Server;
 use webignition\DockerTcpCliProxy\Services\ClientHandler;
 use webignition\DockerTcpCliProxy\Services\ClientHandlerFactory;
@@ -24,19 +24,23 @@ class ServerTest extends TestCase
     {
         $bindAddress = 'localhost';
         $bindPort = 8080;
+        $connectionString = 'tcp://' . $bindAddress . ':' . $bindPort;
 
-        $server = Server::create($bindAddress, $bindPort);
+        $listenSocket = Mockery::mock(Socket::class);
 
-        $expectedListenSocket = new ListenSocket(
-            new Factory(),
-            'tcp://' . $bindAddress . ':' . $bindPort
-        );
+        $socketFactory = Mockery::mock(Factory::class);
+        $socketFactory
+            ->shouldReceive('createServer')
+            ->with($connectionString)
+            ->andReturn($listenSocket);
+
+        $server = Server::create($bindAddress, $bindPort, $socketFactory);
 
         self::assertEquals(
             new Server(
-                $expectedListenSocket,
+                $listenSocket,
                 new ClientHandlerFactory(
-                    new CommunicationSocketFactory($expectedListenSocket)
+                    new CommunicationSocketFactory($listenSocket)
                 )
             ),
             $server
@@ -49,7 +53,7 @@ class ServerTest extends TestCase
     public function testHandleClient(ClientHandler $clientHandler)
     {
         $server = new Server(
-            Mockery::mock(ListenSocket::class),
+            Mockery::mock(Socket::class),
             $this->createClientHandlerFactory($clientHandler)
         );
 
@@ -86,9 +90,9 @@ class ServerTest extends TestCase
 
     public function testStopListening()
     {
-        $listenSocket = Mockery::mock(ListenSocket::class);
+        $listenSocket = Mockery::mock(Socket::class);
         $listenSocket
-            ->shouldReceive('close')
+            ->shouldReceive('shutdown', 'close')
             ->withNoArgs();
 
         $server = new Server(
