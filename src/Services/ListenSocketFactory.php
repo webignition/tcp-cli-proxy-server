@@ -18,7 +18,6 @@ class ListenSocketFactory
 
     public function create(string $bindAddress, int $bindPort): Socket
     {
-        // @todo: handle exceptions in #14 (as a consequence of _create, _bind, _listen)
         return $this->socketFactory->createServer(sprintf(
             'tcp://%s:%d',
             $bindAddress,

@@ -2,3 +2,5 @@
 /server
 /vendor/
 .phpunit.result.cache
+stdout.log
+stderr.log

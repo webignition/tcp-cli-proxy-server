@@ -15,6 +15,9 @@ if ('' === $pharPath) {
     require 'phar://server.phar/vendor/autoload.php';
 }
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Socket\Raw\Exception;
 use webignition\DockerTcpCliProxy\Server;
 
 pcntl_async_signals(true);
@@ -24,10 +27,22 @@ pcntl_signal(SIGINT, function () use (&$running) {
     $running = false;
 });
 
-$server = Server::create('0.0.0.0', 8000);
+try {
+    $server = Server::create('0.0.0.0', 8000);
 
-while ($running) {
-    $server->handleClient();
+    while ($running) {
+        $server->handleClient();
+    }
+
+    $server->stopListening();
+} catch (Exception $socketException) {
+    $exceptionLogger = new Logger('tcp-cli-proxy-stderr', [
+        new StreamHandler('php://stderr', Logger::DEBUG)
+    ]);
+
+    $exceptionLogger->error('ListenSocket::create() failed: ' . $socketException->getMessage(), [
+        'file' => __FILE__,
+        'line' => __LINE__,
+        'trace' => $socketException->getTraceAsString(),
+    ]);
 }
-
-$server->stopListening();
