@@ -4,36 +4,47 @@ declare(strict_types=1);
 
 namespace webignition\DockerTcpCliProxy;
 
-use webignition\DockerTcpCliProxy\Model\CommunicationSocket;
 use webignition\DockerTcpCliProxy\Model\ListenSocket;
-use webignition\DockerTcpCliProxy\Services\CommandReader;
-use webignition\DockerTcpCliProxy\Services\ResponseWriter;
+use webignition\DockerTcpCliProxy\Services\ClientHandlerFactory;
+use webignition\DockerTcpCliProxy\Services\CommunicationSocketFactory;
+use webignition\DockerTcpCliProxy\Services\ListenSocketFactory;
 
 class Server
 {
     private ListenSocket $listenSocket;
+    private ClientHandlerFactory $clientHandlerFactory;
 
-    public function __construct(ListenSocket $listenSocket)
+    public function __construct(ListenSocket $listenSocket, ClientHandlerFactory $clientHandlerFactory)
     {
         $this->listenSocket = $listenSocket;
+        $this->clientHandlerFactory = $clientHandlerFactory;
     }
 
-    public function handleClients(): void
+    public static function create(string $bindAddress, int $bindPort): self
     {
-        $communicationSocket = new CommunicationSocket($this->listenSocket);
+        $listenSocket = (new ListenSocketFactory())->create($bindAddress, $bindPort);
 
-        $commandReader = new CommandReader($communicationSocket);
-        $responseWriter = new ResponseWriter($communicationSocket);
+        return new Server(
+            $listenSocket,
+            new ClientHandlerFactory(
+                new CommunicationSocketFactory($listenSocket)
+            )
+        );
+    }
+
+    public function handleClient(): void
+    {
+        $clientHandler = $this->clientHandlerFactory->create();
 
         do {
-            $command = $commandReader->read();
+            $command = $clientHandler->readCommand();
 
             if ($command->isExecutable()) {
-                $responseWriter->write($command->execute());
+                $clientHandler->writeResponse($command->execute());
             }
         } while (false === $command->isCloseClientConnection());
 
-        $communicationSocket->close();
+        $clientHandler->stop();
     }
 
     public function stopListening(): void
