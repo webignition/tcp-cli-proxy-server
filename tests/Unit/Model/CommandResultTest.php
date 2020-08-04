@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\DockerTcpCliProxy\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
-use webignition\DockerTcpCliProxy\Model\Command;
 use webignition\DockerTcpCliProxy\Model\CommandResult;
 
 class CommandResultTest extends TestCase
