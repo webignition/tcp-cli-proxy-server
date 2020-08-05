@@ -8,16 +8,16 @@ class Command
 {
     public const CLOSE_CLIENT_CONNECTION_COMMAND = 'quit';
 
-    private ?string $content;
+    private string $content;
 
-    public function __construct(?string $content)
+    public function __construct(string $content)
     {
-        $this->content = $content;
+        $this->content = trim($content);
     }
 
     public function isExecutable(): bool
     {
-        return false === $this->isNull() && false === $this->isCloseClientConnection();
+        return false === $this->isEmpty() && false === $this->isCloseClientConnection();
     }
 
     public function isCloseClientConnection(): bool
@@ -25,22 +25,22 @@ class Command
         return self::CLOSE_CLIENT_CONNECTION_COMMAND === $this->content;
     }
 
-    public function isNull(): bool
+    public function isEmpty(): bool
     {
-        return null === $this->content;
+        return '' === $this->content;
     }
 
     public function execute(): CommandResult
     {
         $output = [];
         $exitCode = null;
-        exec((string) $this, $output, $exitCode);
+        exec($this->content, $output, $exitCode);
 
         return new CommandResult((int) $exitCode, implode("\n", $output));
     }
 
     public function __toString(): string
     {
-        return (string) $this->content;
+        return $this->content;
     }
 }
