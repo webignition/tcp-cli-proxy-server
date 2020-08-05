@@ -24,8 +24,8 @@ class CommandTest extends TestCase
                 'command' => new Command('ls'),
                 'expectedIsExecutable' => true,
             ],
-            'null command' => [
-                'command' => new Command(null),
+            'empty command' => [
+                'command' => new Command(''),
                 'expectedIsExecutable' => false,
             ],
             'quit command' => [
@@ -50,8 +50,8 @@ class CommandTest extends TestCase
                 'command' => new Command('ls'),
                 'expectedIsCloseClientConnection' => false,
             ],
-            'null command' => [
-                'command' => new Command(null),
+            'empty command' => [
+                'command' => new Command(''),
                 'expectedIsCloseClientConnection' => false,
             ],
             'quit command' => [
@@ -62,27 +62,31 @@ class CommandTest extends TestCase
     }
 
     /**
-     * @dataProvider isNullDataProvider
+     * @dataProvider isEmptyDataProvider
      */
-    public function testIsNull(Command $command, bool $expectedIsNull)
+    public function testIsEmpty(Command $command, bool $expectedIsEmpty)
     {
-        self::assertSame($expectedIsNull, $command->isNull());
+        self::assertSame($expectedIsEmpty, $command->isEmpty());
     }
 
-    public function isNullDataProvider(): array
+    public function isEmptyDataProvider(): array
     {
         return [
             'executable command' => [
                 'command' => new Command('ls'),
-                'expectedIsNull' => false,
+                'expectedIsEmpty' => false,
             ],
-            'null command' => [
-                'command' => new Command(null),
-                'expectedIsNull' => true,
+            'empty command' => [
+                'command' => new Command(''),
+                'expectedIsEmpty' => true,
+            ],
+            'whitespace command' => [
+                'command' => new Command('  '),
+                'expectedIsEmpty' => true,
             ],
             'quit command' => [
                 'command' => new Command(Command::CLOSE_CLIENT_CONNECTION_COMMAND),
-                'expectedIsNull' => false,
+                'expectedIsEmpty' => false,
             ],
         ];
     }
