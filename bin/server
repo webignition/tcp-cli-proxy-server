@@ -27,15 +27,8 @@ pcntl_signal(SIGINT, function () use (&$running) {
     $running = false;
 });
 
-try {
-    $server = Server::create('0.0.0.0', 8000);
-
-    while ($running) {
-        $server->handleClient();
-    }
-
-    $server->stopListening();
-} catch (Exception $socketException) {
+function logException(Exception $socketException): void
+{
     $exceptionLogger = new Logger('tcp-cli-proxy-stderr', [
         new StreamHandler('php://stderr', Logger::DEBUG)
     ]);
@@ -45,4 +38,20 @@ try {
         'line' => __LINE__,
         'trace' => $socketException->getTraceAsString(),
     ]);
+}
+
+try {
+    $server = Server::create('0.0.0.0', 8000);
+
+    while ($running) {
+        try {
+            $server->handleClient();
+        } catch (Exception $socketException) {
+            logException($socketException);
+        }
+    }
+
+    $server->stopListening();
+} catch (Exception $socketException) {
+    logException($socketException);
 }
