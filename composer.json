@@ -1,8 +1,8 @@
 {
-    "name": "webignition/docker-tcp-cli-proxy",
-    "description": "Proxy server for running inside docker container to allow proxying of CLI commands over TCP",
+    "name": "webignition/tcp-cli-proxy-server",
+    "description": "Proxy server (for running inside docker container) to allow proxying of CLI commands over TCP",
     "keywords": [],
-    "homepage": "https://github.com/webignition/docker-tcp-cli-proxy",
+    "homepage": "https://github.com/webignition/tcp-cli-proxy-server",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -13,13 +13,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "webignition\\DockerTcpCliProxy\\": "src",
-            "webignition\\DockerTcpCliProxy\\Bin\\": "bin"
+            "webignition\\TcpCliProxyServer\\": "src",
+            "webignition\\TcpCliProxyServer\\Bin\\": "bin"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "webignition\\DockerTcpCliProxy\\Tests\\": "tests"
+            "webignition\\TcpCliProxyServer\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -40,12 +40,14 @@
         "phar-dump-autoload": "@composer dump-autoload --classmap-authoritative --no-dev --no-scripts --optimize",
         "phar-compile": "@php -dphar.readonly=0 bin/compile.php",
         "phar-build": [
+            "@composer install --no-dev --prefer-dist",
             "rm -f build/server.phar",
             "@phar-dump-autoload",
             "@phar-compile",
             "rm -f server",
             "cp build/server.phar server",
-            "chmod +x ./server"
+            "chmod +x ./server",
+            "@composer install"
         ],
         "server-test": [
             "@composer dump-autoload",

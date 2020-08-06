@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Services;
+namespace webignition\TcpCliProxyServer\Services;
 
-use webignition\DockerTcpCliProxy\Model\CommandResult;
+use webignition\TcpCliProxyServer\Model\CommandResult;
 
 class ResponseWriter extends AbstractSocketHandler
 {

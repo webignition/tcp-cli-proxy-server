@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Services;
+namespace webignition\TcpCliProxyServer\Services;
 
-use webignition\DockerTcpCliProxy\Model\Command;
-use webignition\DockerTcpCliProxy\Model\CommandResult;
-use webignition\DockerTcpCliProxy\Model\CommunicationSocket;
+use webignition\TcpCliProxyServer\Model\Command;
+use webignition\TcpCliProxyServer\Model\CommandResult;
+use webignition\TcpCliProxyServer\Model\CommunicationSocket;
 
 class ClientHandler
 {

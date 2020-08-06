@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Tests\Unit\Model;
+namespace webignition\TcpCliProxyServer\Tests\Unit\Model;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Socket\Raw\Socket;
-use webignition\DockerTcpCliProxy\Model\CommunicationSocket;
+use webignition\TcpCliProxyServer\Model\CommunicationSocket;
 
 class CommunicationSocketTest extends TestCase
 {
