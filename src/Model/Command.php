@@ -30,13 +30,13 @@ class Command
         return '' === $this->content;
     }
 
-    public function execute(): CommandResult
+    public function execute(): Output
     {
         $output = [];
         $exitCode = null;
         exec($this->content, $output, $exitCode);
 
-        return new CommandResult((int) $exitCode, implode("\n", $output));
+        return new Output((int) $exitCode, implode("\n", $output));
     }
 
     public function __toString(): string

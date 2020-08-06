@@ -8,8 +8,8 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use webignition\TcpCliProxyServer\Model\Command;
-use webignition\TcpCliProxyServer\Model\CommandResult;
 use webignition\TcpCliProxyServer\Model\CommunicationSocket;
+use webignition\TcpCliProxyServer\Model\Output;
 use webignition\TcpCliProxyServer\Services\ClientHandler;
 use webignition\TcpCliProxyServer\Services\CommandReader;
 use webignition\TcpCliProxyServer\Services\ResponseWriter;
@@ -37,12 +37,12 @@ class ClientHandlerTest extends TestCase
 
     public function testWriteResponse()
     {
-        $commandResult = new CommandResult(0, '.');
+        $output = new Output(0, '.');
 
         $responseWriter = Mockery::mock(ResponseWriter::class);
         $responseWriter
             ->shouldReceive('write')
-            ->with($commandResult);
+            ->with($output);
 
         $clientHandler = new ClientHandler(
             Mockery::mock(CommunicationSocket::class),
@@ -50,7 +50,7 @@ class ClientHandlerTest extends TestCase
             $responseWriter
         );
 
-        $clientHandler->writeResponse($commandResult);
+        $clientHandler->writeResponse($output);
     }
 
     public function testStop()

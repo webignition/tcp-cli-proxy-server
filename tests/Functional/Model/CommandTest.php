@@ -6,15 +6,15 @@ namespace webignition\TcpCliProxyServer\Tests\Functional\Model;
 
 use PHPUnit\Framework\TestCase;
 use webignition\TcpCliProxyServer\Model\Command;
-use webignition\TcpCliProxyServer\Model\CommandResult;
+use webignition\TcpCliProxyServer\Model\Output;
 
 class CommandTest extends TestCase
 {
     public function testExecute()
     {
         $command = new Command('ls ' . __FILE__);
-        $expectedCommandResult = new CommandResult(0, __FILE__);
+        $expectedOutput = new Output(0, __FILE__);
 
-        self::assertEquals($expectedCommandResult, $command->execute());
+        self::assertEquals($expectedOutput, $command->execute());
     }
 }

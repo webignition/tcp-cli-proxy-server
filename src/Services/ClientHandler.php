@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\TcpCliProxyServer\Services;
 
 use webignition\TcpCliProxyServer\Model\Command;
-use webignition\TcpCliProxyServer\Model\CommandResult;
 use webignition\TcpCliProxyServer\Model\CommunicationSocket;
+use webignition\TcpCliProxyServer\Model\Output;
 
 class ClientHandler
 {
@@ -29,9 +29,9 @@ class ClientHandler
         return $this->commandReader->read();
     }
 
-    public function writeResponse(CommandResult $commandResult): void
+    public function writeResponse(Output $output): void
     {
-        $this->responseWriter->write($commandResult);
+        $this->responseWriter->write($output);
     }
 
     public function stop(): void
