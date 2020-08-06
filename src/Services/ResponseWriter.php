@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Services;
 
-use webignition\TcpCliProxyServer\Model\CommandResult;
+use webignition\TcpCliProxyServer\Model\Output;
 
 class ResponseWriter extends AbstractSocketHandler
 {
-    public function write(CommandResult $commandResult): void
+    public function write(Output $commandResult): void
     {
-        $this->communicationSocket->getSocket()->write((string) $commandResult->getExitCode() . "\n");
-        $this->communicationSocket->getSocket()->write($commandResult->getResponse() . "\n");
+        $this->communicationSocket->getSocket()->write((string) $commandResult . "\n");
     }
 }

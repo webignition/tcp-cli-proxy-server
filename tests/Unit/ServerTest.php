@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Socket\Raw\Factory;
 use Socket\Raw\Socket;
 use webignition\TcpCliProxyServer\Model\Command;
-use webignition\TcpCliProxyServer\Model\CommandResult;
+use webignition\TcpCliProxyServer\Model\Output;
 use webignition\TcpCliProxyServer\Server;
 use webignition\TcpCliProxyServer\Services\ClientHandler;
 use webignition\TcpCliProxyServer\Services\ClientHandlerFactory;
@@ -62,7 +62,7 @@ class ServerTest extends TestCase
 
     public function handleClientDataProvider(): array
     {
-        $lsCommandResult = new CommandResult(0, '.');
+        $lsCommandResult = new Output(0, '.');
 
         return [
             'single quit command' => [
@@ -105,11 +105,11 @@ class ServerTest extends TestCase
 
     /**
      * @param Command $command
-     * @param CommandResult $commandResult
+     * @param Output $commandResult
      *
      * @return Command
      */
-    private function mockCommandExecute(Command $command, CommandResult $commandResult): Command
+    private function mockCommandExecute(Command $command, Output $commandResult): Command
     {
         $command = Mockery::mock($command);
         $command
@@ -122,7 +122,7 @@ class ServerTest extends TestCase
 
     /**
      * @param Command[] $commands
-     * @param CommandResult[] $commandResults
+     * @param Output[] $commandResults
      *
      * @return ClientHandler
      */
@@ -145,7 +145,7 @@ class ServerTest extends TestCase
 
         $clientHandler
             ->shouldReceive('writeResponse')
-            ->withArgs(function (CommandResult $commandResult) use ($commandResults, &$resultIndex) {
+            ->withArgs(function (Output $commandResult) use ($commandResults, &$resultIndex) {
                 self::assertSame($commandResults[$resultIndex], $commandResult);
 
                 $resultIndex++;
