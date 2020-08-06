@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Tests\Unit\Services;
+namespace webignition\TcpCliProxyServer\Tests\Unit\Services;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Socket\Raw\Socket;
-use webignition\DockerTcpCliProxy\Model\Command;
-use webignition\DockerTcpCliProxy\Model\CommunicationSocket;
-use webignition\DockerTcpCliProxy\Services\CommandReader;
+use webignition\TcpCliProxyServer\Model\Command;
+use webignition\TcpCliProxyServer\Model\CommunicationSocket;
+use webignition\TcpCliProxyServer\Services\CommandReader;
 
 class CommandReaderTest extends TestCase
 {

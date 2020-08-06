@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Tests\Unit\Services;
+namespace webignition\TcpCliProxyServer\Tests\Unit\Services;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Socket\Raw\Factory;
 use Socket\Raw\Socket;
-use webignition\DockerTcpCliProxy\Services\ListenSocketFactory;
+use webignition\TcpCliProxyServer\Services\ListenSocketFactory;
 
 class ListenSocketFactoryTest extends TestCase
 {

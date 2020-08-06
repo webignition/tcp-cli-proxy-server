@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Model;
+namespace webignition\TcpCliProxyServer\Model;
 
 class CommandResult
 {

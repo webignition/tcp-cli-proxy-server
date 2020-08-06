@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Services;
+namespace webignition\TcpCliProxyServer\Services;
 
 use webignition\SingleCommandApplicationPharBuilder\Builder;
 

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Tests\Unit\Services;
+namespace webignition\TcpCliProxyServer\Tests\Unit\Services;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Socket\Raw\Factory;
 use Socket\Raw\Socket;
-use webignition\DockerTcpCliProxy\Model\Command;
-use webignition\DockerTcpCliProxy\Model\CommandResult;
-use webignition\DockerTcpCliProxy\Server;
-use webignition\DockerTcpCliProxy\Services\ClientHandler;
-use webignition\DockerTcpCliProxy\Services\ClientHandlerFactory;
-use webignition\DockerTcpCliProxy\Services\CommunicationSocketFactory;
+use webignition\TcpCliProxyServer\Model\Command;
+use webignition\TcpCliProxyServer\Model\CommandResult;
+use webignition\TcpCliProxyServer\Server;
+use webignition\TcpCliProxyServer\Services\ClientHandler;
+use webignition\TcpCliProxyServer\Services\ClientHandlerFactory;
+use webignition\TcpCliProxyServer\Services\CommunicationSocketFactory;
 
 class ServerTest extends TestCase
 {

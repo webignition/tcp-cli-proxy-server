@@ -18,7 +18,7 @@ if ('' === $pharPath) {
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Socket\Raw\Exception;
-use webignition\DockerTcpCliProxy\Server;
+use webignition\TcpCliProxyServer\Server;
 
 pcntl_async_signals(true);
 

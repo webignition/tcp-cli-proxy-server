@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Services;
+namespace webignition\TcpCliProxyServer\Services;
 
 use Socket\Raw\Socket;
-use webignition\DockerTcpCliProxy\Model\CommunicationSocket;
+use webignition\TcpCliProxyServer\Model\CommunicationSocket;
 
 class CommunicationSocketFactory
 {

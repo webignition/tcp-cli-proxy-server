@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Tests\Functional\Model;
+namespace webignition\TcpCliProxyServer\Tests\Functional\Model;
 
 use PHPUnit\Framework\TestCase;
-use webignition\DockerTcpCliProxy\Model\Command;
-use webignition\DockerTcpCliProxy\Model\CommandResult;
+use webignition\TcpCliProxyServer\Model\Command;
+use webignition\TcpCliProxyServer\Model\CommandResult;
 
 class CommandTest extends TestCase
 {

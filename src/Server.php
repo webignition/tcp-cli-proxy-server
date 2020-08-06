@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy;
+namespace webignition\TcpCliProxyServer;
 
 use Socket\Raw\Factory;
 use Socket\Raw\Socket;
-use webignition\DockerTcpCliProxy\Services\ClientHandlerFactory;
-use webignition\DockerTcpCliProxy\Services\CommunicationSocketFactory;
-use webignition\DockerTcpCliProxy\Services\ListenSocketFactory;
+use webignition\TcpCliProxyServer\Services\ClientHandlerFactory;
+use webignition\TcpCliProxyServer\Services\CommunicationSocketFactory;
+use webignition\TcpCliProxyServer\Services\ListenSocketFactory;
 
 class Server
 {

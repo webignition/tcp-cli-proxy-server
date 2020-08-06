@@ -6,7 +6,7 @@ $root = (string) realpath(__DIR__ . '/..');
 
 require $root . '/vendor/autoload.php';
 
-use webignition\DockerTcpCliProxy\Services\PharBuilder;
+use webignition\TcpCliProxyServer\Services\PharBuilder;
 
 $binPath = __DIR__ . '/server';
 
