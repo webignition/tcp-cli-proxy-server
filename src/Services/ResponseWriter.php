@@ -10,6 +10,6 @@ class ResponseWriter extends AbstractSocketHandler
 {
     public function write(Output $output): void
     {
-        $this->communicationSocket->getSocket()->write((string) $output . "\n");
+        $this->communicationSocket->getSocket()->send((string) $output, MSG_EOF);
     }
 }

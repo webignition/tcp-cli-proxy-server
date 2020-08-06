@@ -25,8 +25,8 @@ class ResponseWriterTest extends TestCase
 
         $socket = Mockery::mock(Socket::class);
         $socket
-            ->shouldReceive('write')
-            ->with(((string) $output) . "\n");
+            ->shouldReceive('send')
+            ->with(((string) $output), MSG_EOF);
 
         $communicationSocket = Mockery::mock(CommunicationSocket::class);
         $communicationSocket

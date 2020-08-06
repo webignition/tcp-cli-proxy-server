@@ -11,7 +11,7 @@ class CommandReader extends AbstractSocketHandler
     public function read(): Command
     {
         return new Command(
-            $this->communicationSocket->getSocket()->read(2048, PHP_NORMAL_READ)
+            $this->communicationSocket->getSocket()->read(2048, PHP_BINARY_READ)
         );
     }
 }
