@@ -29,9 +29,9 @@ class ClientHandler
         return $this->commandReader->read();
     }
 
-    public function writeResponse(Output $commandResult): void
+    public function writeResponse(Output $output): void
     {
-        $this->responseWriter->write($commandResult);
+        $this->responseWriter->write($output);
     }
 
     public function stop(): void

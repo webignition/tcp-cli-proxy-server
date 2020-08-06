@@ -37,12 +37,12 @@ class ClientHandlerTest extends TestCase
 
     public function testWriteResponse()
     {
-        $commandResult = new Output(0, '.');
+        $output = new Output(0, '.');
 
         $responseWriter = Mockery::mock(ResponseWriter::class);
         $responseWriter
             ->shouldReceive('write')
-            ->with($commandResult);
+            ->with($output);
 
         $clientHandler = new ClientHandler(
             Mockery::mock(CommunicationSocket::class),
@@ -50,7 +50,7 @@ class ClientHandlerTest extends TestCase
             $responseWriter
         );
 
-        $clientHandler->writeResponse($commandResult);
+        $clientHandler->writeResponse($output);
     }
 
     public function testStop()

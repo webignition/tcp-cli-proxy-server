@@ -8,8 +8,8 @@ use webignition\TcpCliProxyServer\Model\Output;
 
 class ResponseWriter extends AbstractSocketHandler
 {
-    public function write(Output $commandResult): void
+    public function write(Output $output): void
     {
-        $this->communicationSocket->getSocket()->write((string) $commandResult . "\n");
+        $this->communicationSocket->getSocket()->write((string) $output . "\n");
     }
 }

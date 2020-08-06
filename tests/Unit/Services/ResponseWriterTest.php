@@ -18,15 +18,15 @@ class ResponseWriterTest extends TestCase
 
     public function testWrite()
     {
-        $commandResultExitCode = 0;
-        $commandResultResponse = 'content';
+        $outputExitCode = 0;
+        $outputResponse = 'content';
 
-        $commandResult = new Output($commandResultExitCode, $commandResultResponse);
+        $output = new Output($outputExitCode, $outputResponse);
 
         $socket = Mockery::mock(Socket::class);
         $socket
             ->shouldReceive('write')
-            ->with(((string) $commandResult) . "\n");
+            ->with(((string) $output) . "\n");
 
         $communicationSocket = Mockery::mock(CommunicationSocket::class);
         $communicationSocket
@@ -34,6 +34,6 @@ class ResponseWriterTest extends TestCase
             ->andReturn($socket);
 
         $responseWriter = new ResponseWriter($communicationSocket);
-        $responseWriter->write($commandResult);
+        $responseWriter->write($output);
     }
 }
