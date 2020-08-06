@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\TcpCliProxyServer\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
+use webignition\TcpCliProxyServer\Model\Output;
 
 class ServerTest extends TestCase
 {
@@ -18,20 +19,17 @@ class ServerTest extends TestCase
     ) {
         $netcatCommand = '(echo "' . $remoteCommand . '"; sleep 1; echo "quit") | netcat localhost 8000';
 
-        $output = [];
+        $rawOutput = [];
         $commandExitCode = null;
-        exec($netcatCommand, $output, $commandExitCode);
+        exec($netcatCommand, $rawOutput, $commandExitCode);
 
         self::assertSame(0, $commandExitCode);
-        self::assertGreaterThanOrEqual(1, count($output));
+        self::assertGreaterThanOrEqual(1, count($rawOutput));
 
-        $remoteCommandExitCode = (int) $output[0];
-        array_shift($output);
+        $output = Output::fromString(implode("\n", $rawOutput));
 
-        $response = implode("\n", $output);
-
-        self::assertSame($expectedRemoteCommandExitCode, $remoteCommandExitCode);
-        self::assertSame($expectedResponse, $response);
+        self::assertSame($expectedRemoteCommandExitCode, $output->getExitCode());
+        self::assertSame($expectedResponse, $output->getContent());
     }
 
     public function queryServerDataProvider(): array
