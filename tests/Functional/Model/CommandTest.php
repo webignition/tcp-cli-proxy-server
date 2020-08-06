@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\TcpCliProxyServer\Tests\Functional\Model;
 
 use PHPUnit\Framework\TestCase;
+use webignition\TcpCliProxyModels\Output;
 use webignition\TcpCliProxyServer\Model\Command;
-use webignition\TcpCliProxyServer\Model\Output;
 
 class CommandTest extends TestCase
 {

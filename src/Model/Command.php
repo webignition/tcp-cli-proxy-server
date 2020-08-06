@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Model;
 
+use webignition\TcpCliProxyModels\Output;
+
 class Command
 {
     public const CLOSE_CLIENT_CONNECTION_COMMAND = 'quit';

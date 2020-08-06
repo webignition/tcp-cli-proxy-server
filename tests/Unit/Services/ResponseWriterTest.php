@@ -8,8 +8,8 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use Socket\Raw\Socket;
+use webignition\TcpCliProxyModels\Output;
 use webignition\TcpCliProxyServer\Model\CommunicationSocket;
-use webignition\TcpCliProxyServer\Model\Output;
 use webignition\TcpCliProxyServer\Services\ResponseWriter;
 
 class ResponseWriterTest extends TestCase

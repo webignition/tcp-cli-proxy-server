@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Services;
 
-use webignition\TcpCliProxyServer\Model\Output;
+use webignition\TcpCliProxyModels\Output;
 
 class ResponseWriter extends AbstractSocketHandler
 {

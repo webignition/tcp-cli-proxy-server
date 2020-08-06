@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Services;
 
+use webignition\TcpCliProxyModels\Output;
 use webignition\TcpCliProxyServer\Model\Command;
 use webignition\TcpCliProxyServer\Model\CommunicationSocket;
-use webignition\TcpCliProxyServer\Model\Output;
 
 class ClientHandler
 {

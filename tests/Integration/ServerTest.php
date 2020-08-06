@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\TcpCliProxyServer\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
-use webignition\TcpCliProxyServer\Model\Output;
+use webignition\TcpCliProxyModels\Output;
 
 class ServerTest extends TestCase
 {
