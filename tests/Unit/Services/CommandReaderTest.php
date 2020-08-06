@@ -59,7 +59,7 @@ class CommandReaderTest extends TestCase
         $socket = Mockery::mock(Socket::class);
         $socket
             ->shouldReceive('read')
-            ->with(2048, PHP_NORMAL_READ)
+            ->with(2048, PHP_BINARY_READ)
             ->andReturn($return);
 
         return $socket;

@@ -65,20 +65,10 @@ class ServerTest extends TestCase
         $lsOutput = new Output(0, '.');
 
         return [
-            'single quit command' => [
-                'clientHandler' => $this->createClientHandler(
-                    [
-                        new Command(Command::CLOSE_CLIENT_CONNECTION_COMMAND),
-                    ],
-                    [
-                    ],
-                ),
-            ],
-            'single executable command, single quit command' => [
+            'single executable command' => [
                 'clientHandler' => $this->createClientHandler(
                     [
                         $this->mockCommandExecute(new Command('ls'), $lsOutput),
-                        new Command(Command::CLOSE_CLIENT_CONNECTION_COMMAND),
                     ],
                     [
                         $lsOutput,

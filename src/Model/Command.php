@@ -8,8 +8,6 @@ use webignition\TcpCliProxyModels\Output;
 
 class Command
 {
-    public const CLOSE_CLIENT_CONNECTION_COMMAND = 'quit';
-
     private string $content;
 
     public function __construct(string $content)
@@ -19,12 +17,7 @@ class Command
 
     public function isExecutable(): bool
     {
-        return false === $this->isEmpty() && false === $this->isCloseClientConnection();
-    }
-
-    public function isCloseClientConnection(): bool
-    {
-        return self::CLOSE_CLIENT_CONNECTION_COMMAND === $this->content;
+        return false === $this->isEmpty();
     }
 
     public function isEmpty(): bool

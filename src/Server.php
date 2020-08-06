@@ -43,13 +43,11 @@ class Server
     {
         $clientHandler = $this->clientHandlerFactory->create();
 
-        do {
-            $command = $clientHandler->readCommand();
+        $command = $clientHandler->readCommand();
 
-            if ($command->isExecutable()) {
-                $clientHandler->writeResponse($command->execute());
-            }
-        } while (false === $command->isCloseClientConnection());
+        if ($command->isExecutable()) {
+            $clientHandler->writeResponse($command->execute());
+        }
 
         $clientHandler->stop();
     }

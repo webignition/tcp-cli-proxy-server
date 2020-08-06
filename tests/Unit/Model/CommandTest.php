@@ -28,36 +28,6 @@ class CommandTest extends TestCase
                 'command' => new Command(''),
                 'expectedIsExecutable' => false,
             ],
-            'quit command' => [
-                'command' => new Command(Command::CLOSE_CLIENT_CONNECTION_COMMAND),
-                'expectedIsExecutable' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider isCloseClientConnectionDataProvider
-     */
-    public function testIsCloseClientConnection(Command $command, bool $expectedIsCloseClientConnection)
-    {
-        self::assertSame($expectedIsCloseClientConnection, $command->isCloseClientConnection());
-    }
-
-    public function isCloseClientConnectionDataProvider(): array
-    {
-        return [
-            'executable command' => [
-                'command' => new Command('ls'),
-                'expectedIsCloseClientConnection' => false,
-            ],
-            'empty command' => [
-                'command' => new Command(''),
-                'expectedIsCloseClientConnection' => false,
-            ],
-            'quit command' => [
-                'command' => new Command(Command::CLOSE_CLIENT_CONNECTION_COMMAND),
-                'expectedIsCloseClientConnection' => true,
-            ],
         ];
     }
 
@@ -83,10 +53,6 @@ class CommandTest extends TestCase
             'whitespace command' => [
                 'command' => new Command('  '),
                 'expectedIsEmpty' => true,
-            ],
-            'quit command' => [
-                'command' => new Command(Command::CLOSE_CLIENT_CONNECTION_COMMAND),
-                'expectedIsEmpty' => false,
             ],
         ];
     }
