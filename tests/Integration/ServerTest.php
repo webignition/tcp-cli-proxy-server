@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\TcpCliProxyServer\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
+use webignition\TcpCliProxyClient\Client;
 use webignition\TcpCliProxyModels\Output;
 
 class ServerTest extends TestCase
@@ -12,24 +13,12 @@ class ServerTest extends TestCase
     /**
      * @dataProvider queryServerDataProvider
      */
-    public function testQueryServer(
-        string $remoteCommand,
-        int $expectedRemoteCommandExitCode,
-        string $expectedResponse
-    ) {
-        $netcatCommand = '(echo "' . $remoteCommand . '"; sleep 1; echo "quit") | netcat localhost 8000';
+    public function testQueryServer(string $remoteCommand, Output $expectedOutput)
+    {
+        $client = new Client('localhost', 8000);
+        $output = $client->request($remoteCommand);
 
-        $rawOutput = [];
-        $commandExitCode = null;
-        exec($netcatCommand, $rawOutput, $commandExitCode);
-
-        self::assertSame(0, $commandExitCode);
-        self::assertGreaterThanOrEqual(1, count($rawOutput));
-
-        $output = Output::fromString(implode("\n", $rawOutput));
-
-        self::assertSame($expectedRemoteCommandExitCode, $output->getExitCode());
-        self::assertSame($expectedResponse, $output->getContent());
+        self::assertEquals($expectedOutput, $output);
     }
 
     public function queryServerDataProvider(): array
@@ -37,8 +26,7 @@ class ServerTest extends TestCase
         return [
             'ls self' => [
                 'remoteCommand' => 'ls ' . __FILE__,
-                'expectedRemoteCommandExitCode' => 0,
-                'expectedResponse' => __FILE__,
+                'expectedOutput' => new Output(0, __FILE__)
             ],
         ];
     }
