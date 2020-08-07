@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d13c509d3fa806ff93718522cd971a4f",
+    "content-hash": "b3c218d0015ba046002087288d201863",
     "packages": [
         {
             "name": "clue/socket-raw",
@@ -309,16 +309,16 @@
         },
         {
             "name": "webignition/tcp-cli-proxy-models",
-            "version": "0.1",
+            "version": "0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/tcp-cli-proxy-models.git",
-                "reference": "f589cd8d39514b72f94dd186200f1add79eca73b"
+                "reference": "06da0bad547ffef8b8ddf8997621a39a30ce56e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/tcp-cli-proxy-models/zipball/f589cd8d39514b72f94dd186200f1add79eca73b",
-                "reference": "f589cd8d39514b72f94dd186200f1add79eca73b",
+                "url": "https://api.github.com/repos/webignition/tcp-cli-proxy-models/zipball/06da0bad547ffef8b8ddf8997621a39a30ce56e8",
+                "reference": "06da0bad547ffef8b8ddf8997621a39a30ce56e8",
                 "shasum": ""
             },
             "require": {
@@ -330,9 +330,6 @@
                 "squizlabs/php_codesniffer": "3.*",
                 "symplify/easy-coding-standard": "^8.0"
             },
-            "bin": [
-                "bin/compiler"
-            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -350,7 +347,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/tcp-cli-proxy-models",
-            "time": "2020-08-06T14:14:25+00:00"
+            "time": "2020-08-07T09:41:59+00:00"
         }
     ],
     "packages-dev": [
@@ -6256,6 +6253,54 @@
                 }
             ],
             "time": "2020-07-12T23:59:07+00:00"
+        },
+        {
+            "name": "webignition/tcp-cli-proxy-client",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/tcp-cli-proxy-client.git",
+                "reference": "56909bf4df9cb069fb36a6421edb5fbb2825afb6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/tcp-cli-proxy-client/zipball/56909bf4df9cb069fb36a6421edb5fbb2825afb6",
+                "reference": "56909bf4df9cb069fb36a6421edb5fbb2825afb6",
+                "shasum": ""
+            },
+            "require": {
+                "clue/socket-raw": "^1.4",
+                "ext-sockets": "*",
+                "php": ">=7.4",
+                "webignition/tcp-cli-proxy-models": ">=0.2,<1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.12.0",
+                "phpstan/phpstan-mockery": "^0.12.7",
+                "phpunit/phpunit": "^9.2",
+                "squizlabs/php_codesniffer": "3.*",
+                "symplify/easy-coding-standard": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\TcpCliProxyClient\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/webignition/tcp-cli-proxy-client",
+            "time": "2020-08-07T10:01:55+00:00"
         },
         {
             "name": "webmozart/assert",
