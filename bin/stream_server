@@ -5,8 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Bin;
 
-use webignition\TcpCliProxyServer\Services\ProcessFactory;
-use webignition\TcpCliProxyServer\Services\RequestHandler;
+use webignition\TcpCliProxyServer\StreamingServer;
 
 const VERSION = 'dev-master';
 
@@ -18,18 +17,11 @@ if ('' === $pharPath) {
     require 'phar://server.phar/vendor/autoload.php';
 }
 
-$processFactory = new ProcessFactory();
+$streamingServer = StreamingServer::create('0.0.0.0', 8000);
 
-$socket = stream_socket_server("tcp://0.0.0.0:8000", $errno, $errstr);
-if (!$socket) {
-    echo "$errstr ($errno)<br />\n";
-} else {
-    while ($connection = stream_socket_accept($socket, -1)) {
-        $requestHandler = new RequestHandler($connection, $processFactory);
-        $requestHandler->handle();
+pcntl_async_signals(true);
+pcntl_signal(SIGINT, function () use ($streamingServer) {
+    $streamingServer->stop();
+});
 
-        fclose($connection);
-    }
-
-    fclose($socket);
-}
+$streamingServer->run();
