@@ -44,7 +44,7 @@ class StreamingServer
      * @param string $host
      * @param int $port
      *
-     * @return static
+     * @return self
      *
      * @throws ServerCreationException
      * @throws \ErrorException
@@ -60,11 +60,10 @@ class StreamingServer
     /**
      * @throws \ErrorException
      */
-    public function run()
+    public function run(): void
     {
-        $this->errorHandler->start();
-
         while (is_resource($this->socket)) {
+            $this->errorHandler->start();
             $connection = stream_socket_accept($this->socket, -1);
 
             if (is_resource($connection)) {
@@ -72,9 +71,9 @@ class StreamingServer
 
                 fclose($connection);
             }
-        }
 
-        $this->errorHandler->stop();
+            $this->errorHandler->stop();
+        }
     }
 
     public function stop(): void

@@ -37,7 +37,7 @@ class SocketFactory
         $this->errorHandler->stop();
 
         if (!is_resource($socket)) {
-            throw new ServerCreationException($this->errorMessage, $this->errorNumber);
+            throw new ServerCreationException((string) $this->errorMessage, (int) $this->errorNumber);
         }
 
         return $socket;

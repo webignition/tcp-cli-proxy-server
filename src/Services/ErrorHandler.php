@@ -6,6 +6,9 @@ namespace webignition\TcpCliProxyServer\Services;
 
 class ErrorHandler
 {
+    /**
+     * @var array<mixed>
+     */
     private ?array $lastError = null;
 
     public function start(): void

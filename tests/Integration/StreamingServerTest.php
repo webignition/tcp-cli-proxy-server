@@ -50,34 +50,34 @@ class StreamingServerTest extends TestCase
 
     public function testServerStreamsResponse()
     {
-        $fp = stream_socket_client('tcp://' . self::HOST . ':' . self::PORT);
+        $clientSocket = stream_socket_client('tcp://' . self::HOST . ':' . self::PORT);
 
-        if (false === is_resource($fp)) {
-            $this->fail('Client connection to server failed');
-        }
+        if (is_resource($clientSocket)) {
+            fwrite($clientSocket, './tests/Integration/fixture.sh' . "\n");
 
-        fwrite($fp, './tests/Integration/fixture.sh' . "\n");
-
-        $before = microtime(true);
-        $lineRetrievalDelays = [];
-        $lines = [];
-
-        while (!feof($fp)) {
-            $lines[] = fgets($fp);
-            $lineRetrievalDelays[] = microtime(true) - $before;
             $before = microtime(true);
-        }
-        fclose($fp);
+            $lineRetrievalDelays = [];
+            $lines = [];
 
-        self::assertSame(
-            "line1\nline2\nline3\n\n0",
-            implode('', $lines)
-        );
+            while (!feof($clientSocket)) {
+                $lines[] = fgets($clientSocket);
+                $lineRetrievalDelays[] = microtime(true) - $before;
+                $before = microtime(true);
+            }
+            fclose($clientSocket);
 
-        $echoLineDelays = array_slice($lineRetrievalDelays, 0, 3);
-        foreach ($echoLineDelays as $delay) {
-            self::assertGreaterThanOrEqual(0.1, $delay);
-            self::assertLessThanOrEqual(0.11, $delay);
+            self::assertSame(
+                "line1\nline2\nline3\n\n0",
+                implode('', $lines)
+            );
+
+            $echoLineDelays = array_slice($lineRetrievalDelays, 0, 3);
+            foreach ($echoLineDelays as $delay) {
+                self::assertGreaterThanOrEqual(0.1, $delay);
+                self::assertLessThanOrEqual(0.11, $delay);
+            }
+        } else {
+            $this->fail('Client connection to server failed');
         }
     }
 }
