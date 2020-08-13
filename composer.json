@@ -51,7 +51,7 @@
         ],
         "server-test": [
             "@composer dump-autoload",
-            "./vendor/bin/phpunit --colors=always tests/Integration/StreamingServerTest.php"
+            "./vendor/bin/phpunit --colors=always tests/Integration/ServerTest.php"
         ]
     },
     "require": {

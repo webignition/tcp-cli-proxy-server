@@ -6,7 +6,7 @@ namespace webignition\TcpCliProxyServer\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
 
-class StreamingServerTest extends TestCase
+class ServerTest extends TestCase
 {
     private const HOST = 'localhost';
     private const PORT = 8000;

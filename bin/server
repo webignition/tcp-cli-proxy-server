@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Bin;
 
-use webignition\TcpCliProxyServer\StreamingServer;
+use webignition\TcpCliProxyServer\Server;
 
 const VERSION = 'dev-master';
 
@@ -17,7 +17,7 @@ if ('' === $pharPath) {
     require 'phar://server.phar/vendor/autoload.php';
 }
 
-$streamingServer = StreamingServer::create('0.0.0.0', 8000);
+$streamingServer = Server::create('0.0.0.0', 8000);
 
 pcntl_async_signals(true);
 pcntl_signal(SIGINT, function () use ($streamingServer) {

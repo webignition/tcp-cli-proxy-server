@@ -10,7 +10,7 @@ script:
   - composer ci
 #  - composer phar-build
 #  - "./server &"
-  - "./bin/stream_server &"
+  - "./bin/server &"
   - composer server-test
 
 cache:
