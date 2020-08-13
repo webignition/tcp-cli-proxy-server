@@ -6,6 +6,23 @@ namespace webignition\TcpCliProxyServer\Services;
 
 class ErrorHandler
 {
+    private ExceptionExaminer $exceptionExaminer;
+    private Logger $logger;
+
+    public function __construct(ExceptionExaminer $exceptionExaminer, Logger $logger)
+    {
+        $this->exceptionExaminer = $exceptionExaminer;
+        $this->logger = $logger;
+    }
+
+    public static function createHandler(): self
+    {
+        return new ErrorHandler(
+            new ExceptionExaminer(),
+            new Logger()
+        );
+    }
+
     /**
      * @var array<mixed>
      */
@@ -41,23 +58,13 @@ class ErrorHandler
                 $this->lastError['line']
             );
 
-            if (false === $this->isExpected($exception)) {
+            if ($this->exceptionExaminer->isFatal($exception)) {
                 throw $exception;
             }
+
+            if (false === $this->exceptionExaminer->isExpected($exception)) {
+                $this->logger->logException($exception);
+            }
         }
-    }
-
-    private function isExpected(\ErrorException $errorException): bool
-    {
-        if ($this->isStreamSocketAcceptSystemCallException($errorException->getMessage())) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function isStreamSocketAcceptSystemCallException(string $message): bool
-    {
-        return preg_match('/^stream_socket_accept\(\):.*Interrupted system call$/', $message) > 0;
     }
 }

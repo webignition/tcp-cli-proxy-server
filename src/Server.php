@@ -51,7 +51,7 @@ class Server
      */
     public static function create(string $host, int $port): self
     {
-        $errorHandler = new ErrorHandler();
+        $errorHandler = ErrorHandler::createHandler();
         $socketFactory = new SocketFactory($errorHandler);
 
         return new Server($host, $port, $socketFactory, RequestHandler::createHandler(), $errorHandler);
