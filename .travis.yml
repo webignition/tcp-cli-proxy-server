@@ -8,19 +8,19 @@ install:
 
 script:
   - composer ci
-  - composer phar-build
-  - "./server &"
-  - composer server-test
+#  - composer phar-build
+#  - "./server &"
+#  - composer server-test
 
 cache:
   directories:
   - "$HOME/.composer/cache/files"
 
-deploy:
-  provider: releases
-  api_key:
-    secure: Nmdnz0HcqDqUi2J3qnHHqcCoCJwBcjLzOK/8Po4DvJEVrh4hmrHU73JTTqtAIammIZIipqUyQyWhQTctyrPGcoOmiMaqNq3eqOyuzElxvHi9DjV+vGTotrsvihgxRIc+GeNsOsS92vUbH9XPS+Hc0Yd8Yor9ePFsU54y1zv8+FZ1NHcnFdNPHK/6wYIpRb9L9aOKq0XlVeDY7JHV5NECM+SWaJFRKuGdSbkwE+3+sON+CvHdqFJcqpP5av4aiH9cl2zhJr6Um88xvDbHiGrejWP2eHGGWnWMCyLjVwO92Q7YWIFcwdGe1p54iprwxB8r4QILH2F99vlXDoM2Bf0hU7C2hPyU/fphzkOpEIrtiEJvL1ctzIQgtA5FvTczZf/ZkXDtJk8v7bONAYZi7dWut2kZOMGrSP/zXDm/igRRu3jZsbiadnQnBGbGv+vN/FEekeIyz6P8TzowdKvhVwi3wfX+rDEujFlYU9MEaR9Cx1OnK91JrJZzYGf+Kj0ZiOoF/JhwGiWb9xUBeMy/oy44o7e4UBM5+lB/+yBZ/gO87sgVYdD56mVhnf2fpVLhX2HvBoEKTwyVfBppA3V8MjLaFnROKFuhcvhdnrA0Ch5PD1UfaLDyPqRRHomcudL43ufe1NOetnlInLMZ22rpAUL8H6AsxcSZdKf+o/wUpa1Ftn0=
-  file: build/server.phar
-  on:
-    tags: true
-  skip_cleanup: 'true'
+#deploy:
+#  provider: releases
+#  api_key:
+#    secure: Nmdnz0HcqDqUi2J3qnHHqcCoCJwBcjLzOK/8Po4DvJEVrh4hmrHU73JTTqtAIammIZIipqUyQyWhQTctyrPGcoOmiMaqNq3eqOyuzElxvHi9DjV+vGTotrsvihgxRIc+GeNsOsS92vUbH9XPS+Hc0Yd8Yor9ePFsU54y1zv8+FZ1NHcnFdNPHK/6wYIpRb9L9aOKq0XlVeDY7JHV5NECM+SWaJFRKuGdSbkwE+3+sON+CvHdqFJcqpP5av4aiH9cl2zhJr6Um88xvDbHiGrejWP2eHGGWnWMCyLjVwO92Q7YWIFcwdGe1p54iprwxB8r4QILH2F99vlXDoM2Bf0hU7C2hPyU/fphzkOpEIrtiEJvL1ctzIQgtA5FvTczZf/ZkXDtJk8v7bONAYZi7dWut2kZOMGrSP/zXDm/igRRu3jZsbiadnQnBGbGv+vN/FEekeIyz6P8TzowdKvhVwi3wfX+rDEujFlYU9MEaR9Cx1OnK91JrJZzYGf+Kj0ZiOoF/JhwGiWb9xUBeMy/oy44o7e4UBM5+lB/+yBZ/gO87sgVYdD56mVhnf2fpVLhX2HvBoEKTwyVfBppA3V8MjLaFnROKFuhcvhdnrA0Ch5PD1UfaLDyPqRRHomcudL43ufe1NOetnlInLMZ22rpAUL8H6AsxcSZdKf+o/wUpa1Ftn0=
+#  file: build/server.phar
+#  on:
+#    tags: true
+#  skip_cleanup: 'true'
