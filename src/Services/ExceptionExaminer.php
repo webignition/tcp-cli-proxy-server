@@ -4,15 +4,35 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Services;
 
-class ErrorExcluder
+class ExceptionExaminer
 {
-    public function isExcluded(\ErrorException $errorException): bool
+    public function isFatal(\Exception $exception): bool
     {
-        $exceptionMessage = $errorException->getMessage();
+        if ($this->isExpected($exception)) {
+            return false;
+        }
+
+        if ($this->isIgnored($exception)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isExpected(\Exception $exception): bool
+    {
+        $exceptionMessage = $exception->getMessage();
 
         if ($this->isStreamSocketAcceptSystemCallException($exceptionMessage)) {
             return true;
         }
+
+        return false;
+    }
+
+    public function isIgnored(\Exception $exception): bool
+    {
+        $exceptionMessage = $exception->getMessage();
 
         if ($this->isFWriteBrokenPipeException($exceptionMessage)) {
             return true;
