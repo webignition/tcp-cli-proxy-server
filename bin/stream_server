@@ -5,7 +5,8 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Bin;
 
-use Symfony\Component\Process\Process;
+use webignition\TcpCliProxyServer\Services\ProcessFactory;
+use webignition\TcpCliProxyServer\Services\RequestHandler;
 
 const VERSION = 'dev-master';
 
@@ -17,20 +18,16 @@ if ('' === $pharPath) {
     require 'phar://server.phar/vendor/autoload.php';
 }
 
+$processFactory = new ProcessFactory();
+
 $socket = stream_socket_server("tcp://0.0.0.0:8000", $errno, $errstr);
 if (!$socket) {
     echo "$errstr ($errno)<br />\n";
 } else {
     while ($connection = stream_socket_accept($socket, -1)) {
-        $command = fgets($connection);
+        $requestHandler = new RequestHandler($connection, $processFactory);
+        $requestHandler->handle();
 
-        $process = Process::fromShellCommandline($command);
-
-        $exitCode = $process->run(function ($type, $buffer) use ($connection) {
-            fwrite($connection, $buffer);
-        });
-
-        fwrite($connection, "\n" . (string) $exitCode);
         fclose($connection);
     }
 
