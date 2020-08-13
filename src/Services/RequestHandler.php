@@ -6,36 +6,41 @@ namespace webignition\TcpCliProxyServer\Services;
 
 class RequestHandler
 {
-    /**
-     * @var resource
-     */
-    private $handle;
     private ProcessFactory $processFactory;
+
+    public function __construct(ProcessFactory $processFactory)
+    {
+        $this->processFactory = $processFactory;
+    }
+
+    public static function createHandler(): self
+    {
+        return new RequestHandler(
+            new ProcessFactory()
+        );
+    }
 
     /**
      * @param resource $handle
-     * @param ProcessFactory $processFactory
+     *
+     * @return int
+     *
+     * @throws \TypeError
      */
-    public function __construct($handle, ProcessFactory $processFactory)
+    public function handle($handle): int
     {
         if (!is_resource($handle)) {
             throw new \TypeError('Provided handle is not a resource');
         }
 
-        $this->handle = $handle;
-        $this->processFactory = $processFactory;
-    }
-
-    public function handle(): int
-    {
-        $command = (string) fgets($this->handle);
+        $command = (string) fgets($handle);
         $process = $this->processFactory->create($command);
 
-        $exitCode = $process->run(function ($type, $buffer) {
-            fwrite($this->handle, $buffer);
+        $exitCode = $process->run(function ($type, $buffer) use ($handle) {
+            fwrite($handle, $buffer);
         });
 
-        fwrite($this->handle, "\n" . (string) $exitCode);
+        fwrite($handle, "\n" . (string) $exitCode);
 
         return $exitCode;
     }

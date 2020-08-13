@@ -49,8 +49,8 @@ class RequestHandlerTest extends TestCase
             ->with($command)
             ->andReturn($process);
 
-        $requestHandler = new RequestHandler($resource, $processFactory);
-        $requestHandlerExitCode = $requestHandler->handle();
+        $requestHandler = new RequestHandler($processFactory);
+        $requestHandlerExitCode = $requestHandler->handle($resource);
 
         self::assertSame($processExitCode, $requestHandlerExitCode);
     }
@@ -77,6 +77,7 @@ class RequestHandlerTest extends TestCase
         self::expectException(\TypeError::class);
         self::expectExceptionMessage('Provided handle is not a resource');
 
-        new RequestHandler($resource, new ProcessFactory());
+        $requestHandler = new RequestHandler(new ProcessFactory());
+        $requestHandler->handle($resource);
     }
 }
