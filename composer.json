@@ -60,6 +60,7 @@
         "ext-sockets": "*",
         "clue/socket-raw": "^1.4",
         "monolog/monolog": "^2.1",
+        "symfony/process": "^5.1",
         "webignition/single-command-application-phar-builder": "^0.2.0",
         "webignition/tcp-cli-proxy-models": "^0.2.0"
     },
