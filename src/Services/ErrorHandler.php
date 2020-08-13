@@ -7,16 +7,19 @@ namespace webignition\TcpCliProxyServer\Services;
 class ErrorHandler
 {
     private ErrorExcluder $excluder;
+    private Logger $logger;
 
-    public function __construct(ErrorExcluder $excluder)
+    public function __construct(ErrorExcluder $excluder, Logger $logger)
     {
         $this->excluder = $excluder;
+        $this->logger = $logger;
     }
 
     public static function createHandler(): self
     {
         return new ErrorHandler(
-            new ErrorExcluder()
+            new ErrorExcluder(),
+            new Logger()
         );
     }
 
@@ -58,6 +61,8 @@ class ErrorHandler
             if (false === $this->excluder->isExcluded($exception)) {
                 throw $exception;
             }
+
+            $this->logger->logException($exception);
         }
     }
 }
