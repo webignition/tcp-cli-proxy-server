@@ -49,6 +49,15 @@ class ErrorHandler
 
     private function isExpected(\ErrorException $errorException): bool
     {
+        if ($this->isStreamSocketAcceptSystemCallException($errorException->getMessage())) {
+            return true;
+        }
+
         return false;
+    }
+
+    private function isStreamSocketAcceptSystemCallException(string $message): bool
+    {
+        return preg_match('/^stream_socket_accept\(\):.*Interrupted system call$/', $message) > 0;
     }
 }
