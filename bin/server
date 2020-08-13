@@ -3,7 +3,10 @@
 
 declare(strict_types=1);
 
-namespace webignition\DockerTcpCliProxy\Bin;
+namespace webignition\TcpCliProxyServer\Bin;
+
+use webignition\TcpCliProxyServer\Server;
+use webignition\TcpCliProxyServer\Services\Logger;
 
 const VERSION = 'dev-master';
 
@@ -15,43 +18,15 @@ if ('' === $pharPath) {
     require 'phar://server.phar/vendor/autoload.php';
 }
 
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-use Socket\Raw\Exception;
-use webignition\TcpCliProxyServer\Server;
-
-pcntl_async_signals(true);
-
-$running = true;
-pcntl_signal(SIGINT, function () use (&$running) {
-    $running = false;
-});
-
-function logException(Exception $socketException): void
-{
-    $exceptionLogger = new Logger('tcp-cli-proxy-stderr', [
-        new StreamHandler('php://stderr', Logger::DEBUG)
-    ]);
-
-    $exceptionLogger->error('ListenSocket::create() failed: ' . $socketException->getMessage(), [
-        'file' => __FILE__,
-        'line' => __LINE__,
-        'trace' => $socketException->getTraceAsString(),
-    ]);
-}
-
 try {
-    $server = Server::create('0.0.0.0', 8000);
+    $streamingServer = Server::create('0.0.0.0', 8000);
 
-    while ($running) {
-        try {
-            $server->handleClient();
-        } catch (Exception $socketException) {
-            logException($socketException);
-        }
-    }
-
-    $server->stopListening();
-} catch (Exception $socketException) {
-    logException($socketException);
+    pcntl_async_signals(true);
+    pcntl_signal(SIGINT, function () use ($streamingServer) {
+        $streamingServer->stop();
+    });
+    $streamingServer->run();
+} catch (\Exception $exception) {
+    $logger = new Logger();
+    $logger->logException($exception);
 }

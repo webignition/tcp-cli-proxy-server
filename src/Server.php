@@ -4,57 +4,80 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer;
 
-use Socket\Raw\Factory;
-use Socket\Raw\Socket;
-use webignition\TcpCliProxyServer\Services\ClientHandlerFactory;
-use webignition\TcpCliProxyServer\Services\CommunicationSocketFactory;
-use webignition\TcpCliProxyServer\Services\ListenSocketFactory;
+use webignition\TcpCliProxyServer\Exception\ServerCreationException;
+use webignition\TcpCliProxyServer\Services\ErrorHandler;
+use webignition\TcpCliProxyServer\Services\RequestHandler;
+use webignition\TcpCliProxyServer\Services\SocketFactory;
 
 class Server
 {
-    private Socket $listenSocket;
-    private ClientHandlerFactory $clientHandlerFactory;
+    /**
+     * @var resource
+     */
+    private $socket;
+    private RequestHandler $requestHandler;
+    private ErrorHandler $errorHandler;
 
-    public function __construct(Socket $listenSocket, ClientHandlerFactory $clientHandlerFactory)
-    {
-        $this->listenSocket = $listenSocket;
-        $this->clientHandlerFactory = $clientHandlerFactory;
+    /**
+     * @param string $host
+     * @param int $port
+     * @param SocketFactory $socketFactory
+     * @param RequestHandler $requestHandler
+     * @param ErrorHandler $errorHandler
+     *
+     * @throws ServerCreationException
+     * @throws \ErrorException
+     */
+    public function __construct(
+        string $host,
+        int $port,
+        SocketFactory $socketFactory,
+        RequestHandler $requestHandler,
+        ErrorHandler $errorHandler
+    ) {
+        $this->errorHandler = $errorHandler;
+        $this->socket = $socketFactory->create($host, $port);
+        $this->requestHandler = $requestHandler;
     }
 
-    public static function create(
-        string $bindAddress,
-        int $bindPort,
-        ?Factory $socketFactory = null,
-        ?ListenSocketFactory $listenSocketFactory = null
-    ): self {
-        $socketFactory = $socketFactory ?? new Factory();
-        $listenSocketFactory = $listenSocketFactory ?? new ListenSocketFactory($socketFactory);
-        $listenSocket = $listenSocketFactory->create($bindAddress, $bindPort);
+    /**
+     * @param string $host
+     * @param int $port
+     *
+     * @return self
+     *
+     * @throws ServerCreationException
+     * @throws \ErrorException
+     */
+    public static function create(string $host, int $port): self
+    {
+        $errorHandler = new ErrorHandler();
+        $socketFactory = new SocketFactory($errorHandler);
 
-        return new Server(
-            $listenSocket,
-            new ClientHandlerFactory(
-                new CommunicationSocketFactory($listenSocket)
-            )
-        );
+        return new Server($host, $port, $socketFactory, RequestHandler::createHandler(), $errorHandler);
     }
 
-    public function handleClient(): void
+    /**
+     * @throws \ErrorException
+     */
+    public function run(): void
     {
-        $clientHandler = $this->clientHandlerFactory->create();
+        while (is_resource($this->socket)) {
+            $this->errorHandler->start();
+            $connection = stream_socket_accept($this->socket, -1);
 
-        $command = $clientHandler->readCommand();
+            if (is_resource($connection)) {
+                $this->requestHandler->handle($connection);
 
-        if ($command->isExecutable()) {
-            $clientHandler->writeResponse($command->execute());
+                fclose($connection);
+            }
+
+            $this->errorHandler->stop();
         }
-
-        $clientHandler->stop();
     }
 
-    public function stopListening(): void
+    public function stop(): void
     {
-        $this->listenSocket->shutdown();
-        $this->listenSocket->close();
+        fclose($this->socket);
     }
 }

@@ -5,20 +5,36 @@ declare(strict_types=1);
 namespace webignition\TcpCliProxyServer\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
-use webignition\TcpCliProxyClient\Client;
-use webignition\TcpCliProxyModels\Output;
 
 class ServerTest extends TestCase
 {
+    private const HOST = 'localhost';
+    private const PORT = 8000;
+
     /**
      * @dataProvider queryServerDataProvider
      */
-    public function testQueryServer(string $remoteCommand, Output $expectedOutput)
-    {
-        $client = new Client('localhost', 8000);
-        $output = $client->request($remoteCommand);
+    public function testQueryServer(
+        string $remoteCommand,
+        int $expectedRemoteCommandExitCode,
+        string $expectedResponse
+    ) {
+        $netcatCommand = '(echo "' . $remoteCommand . '") | netcat ' . self::HOST . ' ' . self::PORT;
 
-        self::assertEquals($expectedOutput, $output);
+        $rawOutput = [];
+        $commandExitCode = null;
+        exec($netcatCommand, $rawOutput, $commandExitCode);
+
+        self::assertSame(0, $commandExitCode);
+        self::assertGreaterThanOrEqual(1, count($rawOutput));
+
+        $reversedRawOutput = array_reverse($rawOutput);
+
+        $remoteCommandExitCode = (int) array_shift($reversedRawOutput);
+        $remoteCommandResponse = implode(array_reverse($reversedRawOutput));
+
+        self::assertSame($expectedRemoteCommandExitCode, $remoteCommandExitCode);
+        self::assertSame($expectedResponse, $remoteCommandResponse);
     }
 
     public function queryServerDataProvider(): array
@@ -26,8 +42,42 @@ class ServerTest extends TestCase
         return [
             'ls self' => [
                 'remoteCommand' => 'ls ' . __FILE__,
-                'expectedOutput' => new Output(0, __FILE__)
+                'expectedRemoteCommandExitCode' => 0,
+                'expectedResponse' => __FILE__,
             ],
         ];
+    }
+
+    public function testServerStreamsResponse()
+    {
+        $clientSocket = stream_socket_client('tcp://' . self::HOST . ':' . self::PORT);
+
+        if (is_resource($clientSocket)) {
+            fwrite($clientSocket, './tests/Integration/fixture.sh' . "\n");
+
+            $before = microtime(true);
+            $lineRetrievalDelays = [];
+            $lines = [];
+
+            while (!feof($clientSocket)) {
+                $lines[] = fgets($clientSocket);
+                $lineRetrievalDelays[] = microtime(true) - $before;
+                $before = microtime(true);
+            }
+            fclose($clientSocket);
+
+            self::assertSame(
+                "line1\nline2\nline3\n\n0",
+                implode('', $lines)
+            );
+
+            $echoLineDelays = array_slice($lineRetrievalDelays, 0, 3);
+            foreach ($echoLineDelays as $delay) {
+                self::assertGreaterThanOrEqual(0.1, $delay);
+                self::assertLessThanOrEqual(0.11, $delay);
+            }
+        } else {
+            $this->fail('Client connection to server failed');
+        }
     }
 }
