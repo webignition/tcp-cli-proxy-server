@@ -8,12 +8,12 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use webignition\ObjectReflector\ObjectReflector;
+use webignition\TcpCliProxyServer\Server;
 use webignition\TcpCliProxyServer\Services\ErrorHandler;
 use webignition\TcpCliProxyServer\Services\RequestHandler;
 use webignition\TcpCliProxyServer\Services\SocketFactory;
-use webignition\TcpCliProxyServer\StreamingServer;
 
-class StreamingServerTest extends TestCase
+class ServerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
@@ -39,7 +39,7 @@ class StreamingServerTest extends TestCase
             ->with($host, $port)
             ->andReturn($socket);
 
-        $server = new StreamingServer($host, $port, $socketFactory, $requestHandler, $errorHandler);
+        $server = new Server($host, $port, $socketFactory, $requestHandler, $errorHandler);
 
         self::assertSame($errorHandler, ObjectReflector::getProperty($server, 'errorHandler'));
         self::assertSame($socket, ObjectReflector::getProperty($server, 'socket'));

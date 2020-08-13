@@ -9,7 +9,7 @@ use webignition\TcpCliProxyServer\Services\ErrorHandler;
 use webignition\TcpCliProxyServer\Services\RequestHandler;
 use webignition\TcpCliProxyServer\Services\SocketFactory;
 
-class StreamingServer
+class Server
 {
     /**
      * @var resource
@@ -54,7 +54,7 @@ class StreamingServer
         $errorHandler = new ErrorHandler();
         $socketFactory = new SocketFactory($errorHandler);
 
-        return new StreamingServer($host, $port, $socketFactory, RequestHandler::createHandler(), $errorHandler);
+        return new Server($host, $port, $socketFactory, RequestHandler::createHandler(), $errorHandler);
     }
 
     /**
