@@ -40,7 +40,9 @@ class RequestHandler
             fwrite($handle, $buffer);
         });
 
-        fwrite($handle, "\n" . (string) $exitCode);
+        if (is_resource($handle)) {
+            fwrite($handle, "\n" . (string) $exitCode);
+        }
 
         return $exitCode;
     }
