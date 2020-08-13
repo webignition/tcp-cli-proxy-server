@@ -58,6 +58,7 @@
         "php": ">=7.4",
         "ext-pcntl": "*",
         "monolog/monolog": "^2.1",
+        "psr/log": "^1.1",
         "symfony/process": "^5.1",
         "webignition/single-command-application-phar-builder": "^0.2.0"
     },

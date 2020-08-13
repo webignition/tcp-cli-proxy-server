@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace webignition\TcpCliProxyServer\Bin;
 
 use webignition\TcpCliProxyServer\Server;
+use webignition\TcpCliProxyServer\Services\Logger;
 
 const VERSION = 'dev-master';
 
@@ -17,11 +18,15 @@ if ('' === $pharPath) {
     require 'phar://server.phar/vendor/autoload.php';
 }
 
-$streamingServer = Server::create('0.0.0.0', 8000);
+try {
+    $streamingServer = Server::create('0.0.0.0', 8000);
 
-pcntl_async_signals(true);
-pcntl_signal(SIGINT, function () use ($streamingServer) {
-    $streamingServer->stop();
-});
-
-$streamingServer->run();
+    pcntl_async_signals(true);
+    pcntl_signal(SIGINT, function () use ($streamingServer) {
+        $streamingServer->stop();
+    });
+    $streamingServer->run();
+} catch (\Exception $exception) {
+    $logger = new Logger();
+    $logger->logException($exception);
+}
