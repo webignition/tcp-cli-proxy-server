@@ -7,9 +7,9 @@ namespace webignition\TcpCliProxyServer\Tests\Unit\Services;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use phpmock\mockery\PHPMockery;
 use PHPUnit\Framework\TestCase;
+use webignition\ErrorHandler\ErrorHandler;
 use webignition\ObjectReflector\ObjectReflector;
 use webignition\TcpCliProxyServer\Exception\ServerCreationException;
-use webignition\TcpCliProxyServer\Services\ErrorHandler;
 use webignition\TcpCliProxyServer\Services\SocketFactory;
 
 class SocketFactoryTest extends TestCase

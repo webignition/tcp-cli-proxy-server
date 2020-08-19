@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Services;
 
+use webignition\ErrorHandler\ErrorHandler;
 use webignition\TcpCliProxyServer\Exception\ServerCreationException;
 
 class SocketFactory
