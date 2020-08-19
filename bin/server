@@ -5,8 +5,14 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Bin;
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger as MonologLogger;
+use webignition\ErrorHandler\ErrorHandler;
+use webignition\ErrorHandler\ExceptionLogEntryFactory\Factory;
 use webignition\TcpCliProxyServer\Server;
-use webignition\TcpCliProxyServer\Services\Logger;
+use webignition\TcpCliProxyServer\Services\ExceptionExaminer;
+use webignition\TcpCliProxyServer\Services\RequestHandler;
+use webignition\TcpCliProxyServer\Services\SocketFactory;
 
 const VERSION = 'dev-master';
 
@@ -18,8 +24,18 @@ if ('' === $pharPath) {
     require 'phar://server.phar/vendor/autoload.php';
 }
 
+$exceptionLogger = new MonologLogger('tcp-cli-proxy-stderr', [
+    new StreamHandler('php://stderr', MonologLogger::DEBUG)
+]);
+
+$errorHandler = new ErrorHandler();
+$errorHandler = $errorHandler->withLogger($exceptionLogger);
+$errorHandler = $errorHandler->withExceptionExaminer(new ExceptionExaminer());
+
+$socketFactory = new SocketFactory($errorHandler);
+
 try {
-    $streamingServer = Server::create('0.0.0.0', 8000);
+    $streamingServer = new Server('0.0.0.0', 8000, $errorHandler, $socketFactory, RequestHandler::createHandler());
 
     pcntl_async_signals(true);
     pcntl_signal(SIGINT, function () use ($streamingServer) {
@@ -27,6 +43,9 @@ try {
     });
     $streamingServer->run();
 } catch (\Exception $exception) {
-    $logger = new Logger();
-    $logger->logException($exception);
+    $exceptionLogEntryFactory = new Factory();
+    $exceptionLogger->error(
+        $exceptionLogEntryFactory->createMessage($exception),
+        $exceptionLogEntryFactory->createContext($exception)
+    );
 }

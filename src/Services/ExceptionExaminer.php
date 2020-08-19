@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Services;
 
-class ExceptionExaminer
+use webignition\ErrorHandler\ExceptionExaminer\ExceptionExaminerInterface;
+
+class ExceptionExaminer implements ExceptionExaminerInterface
 {
     public function isFatal(\Exception $exception): bool
     {
-        if ($this->isExpected($exception)) {
+        if ($this->isRecoverable($exception)) {
             return false;
         }
 
@@ -19,7 +21,7 @@ class ExceptionExaminer
         return true;
     }
 
-    public function isExpected(\Exception $exception): bool
+    public function isRecoverable(\Exception $exception): bool
     {
         $exceptionMessage = $exception->getMessage();
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer;
 
+use webignition\ErrorHandler\ErrorHandler;
 use webignition\TcpCliProxyServer\Exception\ServerCreationException;
-use webignition\TcpCliProxyServer\Services\ErrorHandler;
 use webignition\TcpCliProxyServer\Services\RequestHandler;
 use webignition\TcpCliProxyServer\Services\SocketFactory;
 
@@ -31,30 +31,13 @@ class Server
     public function __construct(
         string $host,
         int $port,
+        ErrorHandler $errorHandler,
         SocketFactory $socketFactory,
-        RequestHandler $requestHandler,
-        ErrorHandler $errorHandler
+        RequestHandler $requestHandler
     ) {
         $this->errorHandler = $errorHandler;
         $this->socket = $socketFactory->create($host, $port);
         $this->requestHandler = $requestHandler;
-    }
-
-    /**
-     * @param string $host
-     * @param int $port
-     *
-     * @return self
-     *
-     * @throws ServerCreationException
-     * @throws \ErrorException
-     */
-    public static function create(string $host, int $port): self
-    {
-        $errorHandler = ErrorHandler::createHandler();
-        $socketFactory = new SocketFactory($errorHandler);
-
-        return new Server($host, $port, $socketFactory, RequestHandler::createHandler(), $errorHandler);
     }
 
     /**
