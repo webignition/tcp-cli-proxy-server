@@ -10,7 +10,7 @@ use webignition\TcpCliProxyServer\Services\ProcessFactory;
 
 class ProcessFactoryTest extends TestCase
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $processFactory = new ProcessFactory();
 

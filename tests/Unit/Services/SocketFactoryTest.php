@@ -16,7 +16,7 @@ class SocketFactoryTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testCreateSuccess()
+    public function testCreateSuccess(): void
     {
         $host = 'localhost';
         $port = 8000;
@@ -52,7 +52,7 @@ class SocketFactoryTest extends TestCase
         self::assertSame($createdSocket, $socket);
     }
 
-    public function testCreateFailureStreamSocketServerReturnsFalse()
+    public function testCreateFailureStreamSocketServerReturnsFalse(): void
     {
         $host = 'localhost';
         $port = 8000;

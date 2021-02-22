@@ -18,7 +18,7 @@ class ServerTest extends TestCase
         string $remoteCommand,
         int $expectedRemoteCommandExitCode,
         string $expectedResponse
-    ) {
+    ): void {
         $netcatCommand = '(echo "' . $remoteCommand . '") | netcat ' . self::HOST . ' ' . self::PORT;
 
         $rawOutput = [];
@@ -37,6 +37,9 @@ class ServerTest extends TestCase
         self::assertSame($expectedResponse, $remoteCommandResponse);
     }
 
+    /**
+     * @return array[]
+     */
     public function queryServerDataProvider(): array
     {
         return [
@@ -48,7 +51,7 @@ class ServerTest extends TestCase
         ];
     }
 
-    public function testServerStreamsResponse()
+    public function testServerStreamsResponse(): void
     {
         $clientSocket = stream_socket_client('tcp://' . self::HOST . ':' . self::PORT);
 

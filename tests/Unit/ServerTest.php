@@ -17,7 +17,7 @@ class ServerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $host = 'localhost';
         $port = 8000;
