@@ -77,7 +77,7 @@ class ServerTest extends TestCase
             $echoLineDelays = array_slice($lineRetrievalDelays, 0, 3);
             foreach ($echoLineDelays as $delay) {
                 self::assertGreaterThanOrEqual(0.1, $delay);
-                self::assertLessThanOrEqual(0.11, $delay);
+                self::assertLessThanOrEqual(0.12, $delay);
             }
         } else {
             $this->fail('Client connection to server failed');
