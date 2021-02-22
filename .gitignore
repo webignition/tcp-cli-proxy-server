@@ -1,6 +1,6 @@
 ./build/server.phar
-/server
-/vendor/
 .phpunit.result.cache
-stdout.log
+/vendor/
+server.phar
 stderr.log
+stdout.log

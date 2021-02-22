@@ -50,5 +50,6 @@ jobs:
       - name: Build and test
         run: |
           composer phar-build
-          ./server &
+          composer server-test-prepare
+          composer server-test-start
           composer server-test
