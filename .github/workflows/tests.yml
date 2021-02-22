@@ -51,6 +51,5 @@ jobs:
         run: |
           composer phar-build
           composer server-test-prepare
-          composer server-test-start
           ./server.phar &
           composer server-test
