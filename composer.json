@@ -45,14 +45,16 @@
             "@composer install --no-dev --prefer-dist",
             "rm -f build/server.phar",
             "@phar-dump-autoload",
-            "@phar-compile",
+            "@phar-compile"
+        ],
+        "server-test-prepare": [
             "rm -f server",
-            "cp build/server.phar server",
-            "chmod +x ./server",
-            "@composer install"
+            "cp build/server.phar server.phar",
+            "chmod +x ./server.phar",
+            "@composer install",
+            "@composer dump-autoload"
         ],
         "server-test": [
-            "@composer dump-autoload",
             "./vendor/bin/phpunit --colors=always tests/Integration/ServerTest.php"
         ]
     },
