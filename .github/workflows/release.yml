@@ -20,7 +20,9 @@ jobs:
           php-version: '7.4'
 
       - name: Build
-        run: composer phar-build
+        run: |
+          composer phar-build
+          cp build/server.phar server.phar
 
       - name: Add to latest release
         uses: xresloader/upload-to-github-release@v1
