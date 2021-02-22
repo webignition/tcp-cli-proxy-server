@@ -47,10 +47,10 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
 
-      - name: Download dependencies
-        uses: php-actions/composer@v2
-        with:
-          args: --ignore-platform-reqs --quiet
+#      - name: Download dependencies
+#        uses: php-actions/composer@v2
+#        with:
+#          args: --ignore-platform-reqs --quiet
 
       - name: Build and test
         run: |
