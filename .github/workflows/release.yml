@@ -32,3 +32,4 @@ jobs:
           file: "server.phar"
           tags: true
           update_latest_release: true
+          draft: false
