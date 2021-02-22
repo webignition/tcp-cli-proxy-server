@@ -54,9 +54,6 @@
             "@composer install",
             "@composer dump-autoload"
         ],
-        "server-test-start": [
-            "./server.phar &"
-        ],
         "server-test": [
             "./vendor/bin/phpunit --colors=always tests/Integration/ServerTest.php"
         ]
