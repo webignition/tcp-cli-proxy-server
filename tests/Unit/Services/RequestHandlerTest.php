@@ -19,7 +19,7 @@ class RequestHandlerTest extends TestCase
     /**
      * @dataProvider handleDataProvider
      */
-    public function testHandle(string $command, int $processExitCode)
+    public function testHandle(string $command, int $processExitCode): void
     {
         /** @var resource $resource */
         $resource = Mockery::mock();
@@ -55,6 +55,9 @@ class RequestHandlerTest extends TestCase
         self::assertSame($processExitCode, $requestHandlerExitCode);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleDataProvider(): array
     {
         return [
@@ -69,7 +72,7 @@ class RequestHandlerTest extends TestCase
         ];
     }
 
-    public function testCreateHandleNotResource()
+    public function testCreateHandleNotResource(): void
     {
         /** @var resource $resource */
         $resource = 'not a resource';
