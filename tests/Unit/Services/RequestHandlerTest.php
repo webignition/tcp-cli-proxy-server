@@ -61,7 +61,7 @@ class RequestHandlerTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleDataProvider(): array
     {
