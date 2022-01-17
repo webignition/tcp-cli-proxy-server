@@ -4,28 +4,28 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51109178bc5382e88ff0d259ce00bf82",
+    "content-hash": "8929a179337059f9ca63ca3906f356a7",
     "packages": [
         {
             "name": "monolog/monolog",
-            "version": "2.2.0",
+            "version": "2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "1cb1cde8e8dd0f70cc0fe51354a59acad9302084"
+                "reference": "fd4380d6fc37626e2f799f29d91195040137eba9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1cb1cde8e8dd0f70cc0fe51354a59acad9302084",
-                "reference": "1cb1cde8e8dd0f70cc0fe51354a59acad9302084",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd4380d6fc37626e2f799f29d91195040137eba9",
+                "reference": "fd4380d6fc37626e2f799f29d91195040137eba9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2",
-                "psr/log": "^1.0.1"
+                "psr/log": "^1.0.1 || ^2.0 || ^3.0"
             },
             "provide": {
-                "psr/log-implementation": "1.0.0"
+                "psr/log-implementation": "1.0.0 || 2.0.0 || 3.0.0"
             },
             "require-dev": {
                 "aws/aws-sdk-php": "^2.4.9 || ^3.0",
@@ -33,14 +33,14 @@
                 "elasticsearch/elasticsearch": "^7",
                 "graylog2/gelf-php": "^1.4.2",
                 "mongodb/mongodb": "^1.8",
-                "php-amqplib/php-amqplib": "~2.4",
+                "php-amqplib/php-amqplib": "~2.4 || ^3",
                 "php-console/php-console": "^3.1.3",
                 "phpspec/prophecy": "^1.6.1",
-                "phpstan/phpstan": "^0.12.59",
+                "phpstan/phpstan": "^0.12.91",
                 "phpunit/phpunit": "^8.5",
                 "predis/predis": "^1.1",
                 "rollbar/rollbar": "^1.3",
-                "ruflin/elastica": ">=0.90 <7.0.1",
+                "ruflin/elastica": ">=0.90@dev",
                 "swiftmailer/swiftmailer": "^5.3|^6.0"
             },
             "suggest": {
@@ -48,8 +48,11 @@
                 "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
                 "elasticsearch/elasticsearch": "Allow sending log messages to an Elasticsearch server via official client",
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
+                "ext-curl": "Required to send log messages using the IFTTTHandler, the LogglyHandler, the SendGridHandler, the SlackWebhookHandler or the TelegramBotHandler",
                 "ext-mbstring": "Allow to work properly with unicode symbols",
                 "ext-mongodb": "Allow sending log messages to a MongoDB server (via driver)",
+                "ext-openssl": "Required to send log messages using SSL",
+                "ext-sockets": "Allow sending log messages to a Syslog server (via UDP driver)",
                 "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
                 "mongodb/mongodb": "Allow sending log messages to a MongoDB server (via library)",
                 "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
@@ -88,7 +91,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.2.0"
+                "source": "https://github.com/Seldaek/monolog/tree/2.3.5"
             },
             "funding": [
                 {
@@ -100,7 +103,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-14T13:15:25+00:00"
+            "time": "2021-10-01T21:08:31+00:00"
         },
         {
             "name": "psr/log",
@@ -154,20 +157,20 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v5.2.3",
+            "version": "v6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "4adc8d172d602008c204c2e16956f99257248e03"
+                "reference": "03d2833e677d48317cac852f9c0287fb048c3c5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/4adc8d172d602008c204c2e16956f99257248e03",
-                "reference": "4adc8d172d602008c204c2e16956f99257248e03",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/03d2833e677d48317cac852f9c0287fb048c3c5c",
+                "reference": "03d2833e677d48317cac852f9c0287fb048c3c5c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5"
+                "php": ">=8.0.2"
             },
             "type": "library",
             "autoload": {
@@ -195,7 +198,7 @@
             "description": "Finds files and directories via an intuitive fluent interface",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/finder/tree/v5.2.3"
+                "source": "https://github.com/symfony/finder/tree/v6.0.2"
             },
             "funding": [
                 {
@@ -211,108 +214,24 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-28T22:06:19+00:00"
-        },
-        {
-            "name": "symfony/polyfill-php80",
-            "version": "v1.22.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "dc3063ba22c2a1fd2f45ed856374d79114998f91"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/dc3063ba22c2a1fd2f45ed856374d79114998f91",
-                "reference": "dc3063ba22c2a1fd2f45ed856374d79114998f91",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.22-dev"
-                },
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php80\\": ""
-                },
-                "files": [
-                    "bootstrap.php"
-                ],
-                "classmap": [
-                    "Resources/stubs"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ion Bazan",
-                    "email": "ion.bazan@gmail.com"
-                },
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill backporting some PHP 8.0+ features to lower PHP versions",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.22.1"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2021-01-07T16:49:33+00:00"
+            "time": "2021-12-20T16:21:45+00:00"
         },
         {
             "name": "symfony/process",
-            "version": "v5.2.3",
+            "version": "v6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "313a38f09c77fbcdc1d223e57d368cea76a2fd2f"
+                "reference": "71da2b7f3fdba460fcf61a97c8d3d14bbf3391ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/313a38f09c77fbcdc1d223e57d368cea76a2fd2f",
-                "reference": "313a38f09c77fbcdc1d223e57d368cea76a2fd2f",
+                "url": "https://api.github.com/repos/symfony/process/zipball/71da2b7f3fdba460fcf61a97c8d3d14bbf3391ad",
+                "reference": "71da2b7f3fdba460fcf61a97c8d3d14bbf3391ad",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
-                "symfony/polyfill-php80": "^1.15"
+                "php": ">=8.0.2"
             },
             "type": "library",
             "autoload": {
@@ -340,7 +259,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.2.3"
+                "source": "https://github.com/symfony/process/tree/v6.0.2"
             },
             "funding": [
                 {
@@ -356,34 +275,33 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-27T10:15:41+00:00"
+            "time": "2021-12-27T21:05:08+00:00"
         },
         {
             "name": "webignition/error-handler",
-            "version": "0.2",
+            "version": "0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/error-handler.git",
-                "reference": "9dfc4079c174385ac9a79bf5cde020360e0c71ce"
+                "reference": "d8cf9eb40025f4773e77ee726fed37c897cd4db0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/error-handler/zipball/9dfc4079c174385ac9a79bf5cde020360e0c71ce",
-                "reference": "9dfc4079c174385ac9a79bf5cde020360e0c71ce",
+                "url": "https://api.github.com/repos/webignition/error-handler/zipball/d8cf9eb40025f4773e77ee726fed37c897cd4db0",
+                "reference": "d8cf9eb40025f4773e77ee726fed37c897cd4db0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4|^8",
-                "psr/log": "^1.1"
+                "php": "^8.0|^8.1",
+                "psr/log": "^1.0|^2.0|^3.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.4",
                 "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^0.12.78",
-                "phpstan/phpstan-mockery": "^0.12.12",
+                "phpstan/phpstan": "^1.4",
+                "phpstan/phpstan-mockery": "^1.0",
                 "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.5",
-                "symplify/easy-coding-standard": "^9.1",
+                "squizlabs/php_codesniffer": "^3.6",
                 "webignition/object-reflector": "^1.0"
             },
             "type": "library",
@@ -406,34 +324,33 @@
             "homepage": "https://github.com/webignition/error-handler",
             "support": {
                 "issues": "https://github.com/webignition/error-handler/issues",
-                "source": "https://github.com/webignition/error-handler/tree/0.2"
+                "source": "https://github.com/webignition/error-handler/tree/0.3"
             },
-            "time": "2021-02-22T10:10:26+00:00"
+            "time": "2022-01-17T17:39:33+00:00"
         },
         {
             "name": "webignition/single-command-application-phar-builder",
-            "version": "0.3",
+            "version": "0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/single-command-application-phar-builder.git",
-                "reference": "b505aa74731a15e2d17e57cf138dc4144fa84efc"
+                "reference": "e3f9211b9410eb2f59627958f104ee27c5241e95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/single-command-application-phar-builder/zipball/b505aa74731a15e2d17e57cf138dc4144fa84efc",
-                "reference": "b505aa74731a15e2d17e57cf138dc4144fa84efc",
+                "url": "https://api.github.com/repos/webignition/single-command-application-phar-builder/zipball/e3f9211b9410eb2f59627958f104ee27c5241e95",
+                "reference": "e3f9211b9410eb2f59627958f104ee27c5241e95",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": ">=7.4|^8",
-                "symfony/finder": "^5.2"
+                "php": "^8.0|^8.1",
+                "symfony/finder": "^6.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.12.78",
+                "phpstan/phpstan": "^1.4",
                 "phpunit/phpunit": "^9.5",
-                "squizlabs/php_codesniffer": "^3.5",
-                "symplify/easy-coding-standard": "^9.2"
+                "squizlabs/php_codesniffer": "^3.6"
             },
             "type": "library",
             "autoload": {
@@ -454,9 +371,9 @@
             "homepage": "https://github.com/webignition/single-command-application-phar-builder",
             "support": {
                 "issues": "https://github.com/webignition/single-command-application-phar-builder/issues",
-                "source": "https://github.com/webignition/single-command-application-phar-builder/tree/0.3"
+                "source": "https://github.com/webignition/single-command-application-phar-builder/tree/0.4"
             },
-            "time": "2021-02-22T16:36:08+00:00"
+            "time": "2022-01-17T18:40:13+00:00"
         }
     ],
     "packages-dev": [
@@ -2841,16 +2758,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.5.8",
+            "version": "3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "9d583721a7157ee997f235f327de038e7ea6dac4"
+                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/9d583721a7157ee997f235f327de038e7ea6dac4",
-                "reference": "9d583721a7157ee997f235f327de038e7ea6dac4",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5e4e71592f69da17871dba6e80dd51bce74a351a",
+                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a",
                 "shasum": ""
             },
             "require": {
@@ -2893,7 +2810,7 @@
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2020-10-23T02:01:07+00:00"
+            "time": "2021-12-12T21:44:58+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3130,7 +3047,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.4|^8",
+        "php": "^8.0",
         "ext-pcntl": "*"
     },
     "platform-dev": [],
