@@ -23,6 +23,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          extensions: pcntl
 
       - name: Download dependencies
         uses: php-actions/composer@v6
