@@ -29,6 +29,7 @@ jobs:
         uses: php-actions/composer@v6
         with:
           php_version: ${{ matrix.php }}
+          args: --ignore-platform-req=ext-pcntl
 
       - name: PHPStan
         run: composer static-analysis
