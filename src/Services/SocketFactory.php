@@ -10,8 +10,8 @@ use webignition\TcpCliProxyServer\Exception\ServerCreationException;
 class SocketFactory
 {
     private ErrorHandler $errorHandler;
-    private ?int $errorNumber;
-    private ?string $errorMessage;
+    private ?int $errorNumber = null;
+    private ?string $errorMessage = null;
 
     public function __construct(ErrorHandler $errorHandler)
     {
@@ -19,13 +19,10 @@ class SocketFactory
     }
 
     /**
-     * @param string $host
-     * @param int $port
-     *
-     * @return resource
-     *
      * @throws \ErrorException
      * @throws ServerCreationException
+     *
+     * @return resource
      */
     public function create(string $host, int $port)
     {

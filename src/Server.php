@@ -19,12 +19,6 @@ class Server
     private ErrorHandler $errorHandler;
 
     /**
-     * @param string $host
-     * @param int $port
-     * @param SocketFactory $socketFactory
-     * @param RequestHandler $requestHandler
-     * @param ErrorHandler $errorHandler
-     *
      * @throws ServerCreationException
      * @throws \ErrorException
      */

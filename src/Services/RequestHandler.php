@@ -23,8 +23,6 @@ class RequestHandler
     /**
      * @param resource $handle
      *
-     * @return int
-     *
      * @throws \TypeError
      */
     public function handle($handle): int

@@ -38,7 +38,7 @@ class ServerTest extends TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function queryServerDataProvider(): array
     {
