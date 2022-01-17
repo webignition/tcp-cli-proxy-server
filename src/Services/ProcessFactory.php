@@ -9,8 +9,6 @@ use Symfony\Component\Process\Process;
 class ProcessFactory
 {
     /**
-     * @param string $command
-     *
      * @return Process<\Generator>
      */
     public function create(string $command): Process

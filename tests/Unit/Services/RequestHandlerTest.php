@@ -26,14 +26,17 @@ class RequestHandlerTest extends TestCase
 
         PHPMockery::mock('webignition\TcpCliProxyServer\Services', 'is_resource')
             ->with($resource)
-            ->andReturnTrue();
+            ->andReturnTrue()
+        ;
 
         PHPMockery::mock('webignition\TcpCliProxyServer\Services', 'fgets')
             ->with($resource)
-            ->andReturn($command);
+            ->andReturn($command)
+        ;
 
         PHPMockery::mock('webignition\TcpCliProxyServer\Services', 'fwrite')
-            ->with($resource, "\n" . (string) $processExitCode);
+            ->with($resource, "\n" . (string) $processExitCode)
+        ;
 
         $process = Mockery::mock(Process::class);
         $process
@@ -41,13 +44,15 @@ class RequestHandlerTest extends TestCase
             ->withArgs(function () {
                 return true;
             })
-            ->andReturn($processExitCode);
+            ->andReturn($processExitCode)
+        ;
 
         $processFactory = Mockery::mock(ProcessFactory::class);
         $processFactory
             ->shouldReceive('create')
             ->with($command)
-            ->andReturn($process);
+            ->andReturn($process)
+        ;
 
         $requestHandler = new RequestHandler($processFactory);
         $requestHandlerExitCode = $requestHandler->handle($resource);

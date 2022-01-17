@@ -1,5 +1,6 @@
 ./build/server.phar
 .phpunit.result.cache
+.php-cs-fixer.cache
 /vendor/
 server.phar
 stderr.log

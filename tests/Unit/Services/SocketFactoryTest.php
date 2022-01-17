@@ -26,7 +26,8 @@ class SocketFactoryTest extends TestCase
 
         PHPMockery::mock('webignition\TcpCliProxyServer\Services', 'is_resource')
             ->with($socket)
-            ->andReturnTrue();
+            ->andReturnTrue()
+        ;
 
         PHPMockery::mock('webignition\TcpCliProxyServer\Services', 'stream_socket_server')
             ->withArgs(function (string $connectionString, $errorNumber, $errorMessage) use ($host, $port) {
@@ -36,14 +37,17 @@ class SocketFactoryTest extends TestCase
 
                 return true;
             })
-            ->andReturn($socket);
+            ->andReturn($socket)
+        ;
 
         $errorHandler = \Mockery::mock(ErrorHandler::class);
         $errorHandler
-            ->shouldReceive('start');
+            ->shouldReceive('start')
+        ;
 
         $errorHandler
-            ->shouldReceive('stop');
+            ->shouldReceive('stop')
+        ;
 
         $factory = new SocketFactory($errorHandler);
 
@@ -59,10 +63,12 @@ class SocketFactoryTest extends TestCase
 
         $errorHandler = \Mockery::mock(ErrorHandler::class);
         $errorHandler
-            ->shouldReceive('start');
+            ->shouldReceive('start')
+        ;
 
         $errorHandler
-            ->shouldReceive('stop');
+            ->shouldReceive('stop')
+        ;
 
         $factory = new SocketFactory($errorHandler);
 
@@ -71,7 +77,8 @@ class SocketFactoryTest extends TestCase
 
         PHPMockery::mock('webignition\TcpCliProxyServer\Services', 'is_resource')
             ->with(false)
-            ->andReturnFalse();
+            ->andReturnFalse()
+        ;
 
         PHPMockery::mock('webignition\TcpCliProxyServer\Services', 'stream_socket_server')
             ->andReturnUsing(function () use ($factory, $errorMessage, $errorNumber) {
@@ -79,7 +86,8 @@ class SocketFactoryTest extends TestCase
                 ObjectReflector::setProperty($factory, SocketFactory::class, 'errorNumber', $errorNumber);
 
                 return false;
-            });
+            })
+        ;
 
         self::expectExceptionObject(new ServerCreationException($errorMessage, $errorNumber));
         $factory->create($host, $port);

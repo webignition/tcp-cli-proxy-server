@@ -28,16 +28,19 @@ class ServerTest extends TestCase
         $requestHandler = Mockery::mock(RequestHandler::class);
         $errorHandler = Mockery::mock(ErrorHandler::class);
         $errorHandler
-            ->shouldReceive('start');
+            ->shouldReceive('start')
+        ;
 
         $errorHandler
-            ->shouldReceive('stop');
+            ->shouldReceive('stop')
+        ;
 
         $socketFactory = Mockery::mock(SocketFactory::class);
         $socketFactory
             ->shouldReceive('create')
             ->with($host, $port)
-            ->andReturn($socket);
+            ->andReturn($socket)
+        ;
 
         $server = new Server($host, $port, $errorHandler, $socketFactory, $requestHandler);
 

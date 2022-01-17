@@ -19,13 +19,10 @@ class SocketFactory
     }
 
     /**
-     * @param string $host
-     * @param int $port
-     *
-     * @return resource
-     *
      * @throws \ErrorException
      * @throws ServerCreationException
+     *
+     * @return resource
      */
     public function create(string $host, int $port)
     {
