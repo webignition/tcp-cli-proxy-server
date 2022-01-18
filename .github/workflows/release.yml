@@ -24,10 +24,17 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
 
+      - name: Create target phar name
+        id: target
+        run: |
+          echo "::set-output name=value::server-${{ matrix.php }}.phar"
+
       - name: Build
+        env:
+          TARGET: ${{ steps.target.outputs.value }}
         run: |
           composer phar-build
-          cp build/server.phar server.phar
+          cp build/server.phar "$TARGET"
 
       - name: Add to latest release
         if: ${{ github.event_name == 'release' }}
@@ -35,7 +42,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "server.phar"
+          file: ${{ steps.target.outputs.value }}
           tags: true
           update_latest_release: true
           draft: false
