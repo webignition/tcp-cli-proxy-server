@@ -47,7 +47,7 @@ jobs:
           TARGET: ${{ steps.target-phar.outputs.value }}
         run: |
           rm -Rf composer.lock
-          composer.update          
+          composer update          
           composer phar-build
           cp build/server.phar "$TARGET"
 
