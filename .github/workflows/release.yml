@@ -39,15 +39,13 @@ jobs:
           TARGET: ${{ steps.target-composer-lock.outputs.value }}
         run: |
           rm -Rf composer.lock
-          composer.update
+          composer update
           cp composer.lock "$TARGET"
 
       - name: Build
         env:
           TARGET: ${{ steps.target-phar.outputs.value }}
-        run: |
-          rm -Rf composer.lock
-          composer update          
+        run: |    
           composer phar-build
           cp build/server.phar "$TARGET"
 
