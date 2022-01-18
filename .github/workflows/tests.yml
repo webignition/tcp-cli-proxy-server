@@ -52,6 +52,8 @@ jobs:
 
       - name: Build and test
         run: |
+          rm -Rf composer.lock
+          composer update          
           composer phar-build
           composer server-test-prepare
           ./server.phar &

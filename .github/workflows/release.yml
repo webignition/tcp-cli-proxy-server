@@ -4,10 +4,15 @@ on:
   release:
     types:
       - published
+  workflow_dispatch:
 
 jobs:
   build:
     name: Build and release phar
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php: ['8.0']
     runs-on: ubuntu-latest
 
     steps:
@@ -17,19 +22,42 @@ jobs:
       - name: Setup php
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
+          php-version: ${{ matrix.php }}
+
+      - name: Create target phar name
+        id: target-phar
+        run: |
+          echo "::set-output name=value::server-${{ matrix.php }}.phar"
+
+      - name: Create target composer.lock name
+        id: target-composer-lock
+        run: |
+          echo "::set-output name=value::composer-${{ matrix.php }}.lock"
+
+      - name: Create build-specific composer.lock
+        env:
+          TARGET: ${{ steps.target-composer-lock.outputs.value }}
+        run: |
+          rm -Rf composer.lock
+          composer.update
+          cp composer.lock "$TARGET"
 
       - name: Build
+        env:
+          TARGET: ${{ steps.target-phar.outputs.value }}
         run: |
+          rm -Rf composer.lock
+          composer.update          
           composer phar-build
-          cp build/server.phar server.phar
+          cp build/server.phar "$TARGET"
 
-      - name: Add to latest release
+      - name: Add phar, composer.lock to latest release
+        if: ${{ github.event_name == 'release' }}
         uses: xresloader/upload-to-github-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "server.phar"
+          file: "${{ steps.target-phar.outputs.value }};${{ steps.target-composer-lock.outputs.value }}"
           tags: true
           update_latest_release: true
           draft: false
