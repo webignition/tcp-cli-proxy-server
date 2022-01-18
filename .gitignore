@@ -5,3 +5,4 @@
 server.phar
 stderr.log
 stdout.log
+composer.lock
