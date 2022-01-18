@@ -41,6 +41,7 @@ jobs:
           rm -Rf composer.lock
           composer update
           cp composer.lock "$TARGET"
+          rm -Rf vendor
 
       - name: Build
         env:
