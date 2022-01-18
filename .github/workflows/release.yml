@@ -4,6 +4,7 @@ on:
   release:
     types:
       - published
+  workflow_dispatch:
 
 jobs:
   build:
@@ -29,6 +30,7 @@ jobs:
           cp build/server.phar server.phar
 
       - name: Add to latest release
+        if: ${{ github.event_name == 'release' }}
         uses: xresloader/upload-to-github-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
