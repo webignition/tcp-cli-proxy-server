@@ -1,6 +1,10 @@
 parameters:
-  level: 8
+  level: 10
   paths:
     - src
     - tests
   inferPrivatePropertyTypeFromConstructor: true
+  ignoreErrors:
+    -
+      message: "#PHPDoc tag @var with type resource is not subtype of native type 'not a resource'#"
+      path: tests/Unit/Services/RequestHandlerTest.php
