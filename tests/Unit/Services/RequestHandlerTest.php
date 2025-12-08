@@ -62,7 +62,7 @@ class RequestHandlerTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function handleDataProvider(): array
+    public static function handleDataProvider(): array
     {
         return [
             'exit code 0' => [
