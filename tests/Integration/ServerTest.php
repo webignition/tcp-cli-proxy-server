@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Tests\Integration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ServerTest extends TestCase
@@ -11,9 +12,7 @@ class ServerTest extends TestCase
     private const HOST = 'localhost';
     private const PORT = 8000;
 
-    /**
-     * @dataProvider queryServerDataProvider
-     */
+    #[DataProvider('queryServerDataProvider')]
     public function testQueryServer(
         string $remoteCommand,
         int $expectedRemoteCommandExitCode,
@@ -40,7 +39,7 @@ class ServerTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function queryServerDataProvider(): array
+    public static function queryServerDataProvider(): array
     {
         return [
             'ls self' => [
