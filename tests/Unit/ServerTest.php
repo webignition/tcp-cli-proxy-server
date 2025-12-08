@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Tests\Unit;
 
-use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
 use webignition\ErrorHandler\ErrorHandler;
@@ -23,10 +22,10 @@ class ServerTest extends TestCase
         $port = 8000;
 
         /** @var resource $socket */
-        $socket = Mockery::mock();
+        $socket = \Mockery::mock();
 
-        $requestHandler = Mockery::mock(RequestHandler::class);
-        $errorHandler = Mockery::mock(ErrorHandler::class);
+        $requestHandler = \Mockery::mock(RequestHandler::class);
+        $errorHandler = \Mockery::mock(ErrorHandler::class);
         $errorHandler
             ->shouldReceive('start')
         ;
@@ -35,7 +34,7 @@ class ServerTest extends TestCase
             ->shouldReceive('stop')
         ;
 
-        $socketFactory = Mockery::mock(SocketFactory::class);
+        $socketFactory = \Mockery::mock(SocketFactory::class);
         $socketFactory
             ->shouldReceive('create')
             ->with($host, $port)

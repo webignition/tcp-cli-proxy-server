@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\TcpCliProxyServer\Tests\Unit\Services;
 
-use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use phpmock\mockery\PHPMockery;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +21,7 @@ class RequestHandlerTest extends TestCase
     public function testHandle(string $command, int $processExitCode): void
     {
         /** @var resource $resource */
-        $resource = Mockery::mock();
+        $resource = \Mockery::mock();
 
         PHPMockery::mock('webignition\TcpCliProxyServer\Services', 'is_resource')
             ->with($resource)
@@ -38,7 +37,7 @@ class RequestHandlerTest extends TestCase
             ->with($resource, "\n" . (string) $processExitCode)
         ;
 
-        $process = Mockery::mock(Process::class);
+        $process = \Mockery::mock(Process::class);
         $process
             ->shouldReceive('run')
             ->withArgs(function () {
@@ -47,7 +46,7 @@ class RequestHandlerTest extends TestCase
             ->andReturn($processExitCode)
         ;
 
-        $processFactory = Mockery::mock(ProcessFactory::class);
+        $processFactory = \Mockery::mock(ProcessFactory::class);
         $processFactory
             ->shouldReceive('create')
             ->with($command)
