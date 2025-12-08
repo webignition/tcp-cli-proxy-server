@@ -6,6 +6,7 @@ namespace webignition\TcpCliProxyServer\Tests\Unit\Services;
 
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use phpmock\mockery\PHPMockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 use webignition\TcpCliProxyServer\Services\ProcessFactory;
@@ -15,9 +16,7 @@ class RequestHandlerTest extends TestCase
 {
     use MockeryPHPUnitIntegration;
 
-    /**
-     * @dataProvider handleDataProvider
-     */
+    #[DataProvider('handleDataProvider')]
     public function testHandle(string $command, int $processExitCode): void
     {
         /** @var resource $resource */
