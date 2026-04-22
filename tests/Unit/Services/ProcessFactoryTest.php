@@ -17,5 +17,7 @@ class ProcessFactoryTest extends TestCase
         $process = $processFactory->create($command);
 
         self::assertSame($command, $process->getCommandLine());
+        self::assertNull($process->getTimeout());
+        self::assertNull($process->getIdleTimeout());
     }
 }

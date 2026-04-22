@@ -10,6 +10,9 @@ class ProcessFactory
 {
     public function create(string $command): Process
     {
-        return Process::fromShellCommandline($command);
+        return Process::fromShellCommandline($command)
+            ->setTimeout(null)
+            ->setIdleTimeout(null)
+        ;
     }
 }
